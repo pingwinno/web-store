@@ -1,4 +1,4 @@
-package com.study.jpa;
+package com.study.persistance;
 
 import com.study.model.Product;
 

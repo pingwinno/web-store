@@ -1,12 +1,11 @@
-package com.study.db;
+package com.study.persistance.factory;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class EntityManagerStorage {
     private final String persistenceName;
-    private volatile EntityManagerFactory entityManagerFactory;
+    private volatile javax.persistence.EntityManagerFactory entityManagerFactory;
 
     public EntityManagerStorage(String persistenceName) {
         this.persistenceName = persistenceName;

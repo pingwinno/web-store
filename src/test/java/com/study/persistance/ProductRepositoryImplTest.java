@@ -1,7 +1,8 @@
-package com.study.jpa;
+package com.study.persistance;
 
-import com.study.db.EntityManagerStorage;
+import com.study.persistance.factory.EntityManagerStorage;
 import com.study.model.Product;
+import com.study.persistance.impl.ProductRepositoryImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class ProductRepositoryITest {
+public class ProductRepositoryImplTest {
     private EntityManagerStorage entityManagerStorage = new EntityManagerStorage("test-store-persistence");
     private final ProductRepository productRepository = new ProductRepositoryImpl(entityManagerStorage);
     private Product product = Product.builder()

@@ -1,6 +1,7 @@
-package com.study.jpa;
+package com.study.persistance.impl;
 
-import com.study.db.EntityManagerStorage;
+import com.study.persistance.ProductRepository;
+import com.study.persistance.factory.EntityManagerStorage;
 import com.study.model.Product;
 
 import javax.persistence.Query;
