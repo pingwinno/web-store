@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-class EntityManagerTest {
+class JpaConfigTest {
 
     @Test
     protected void configurationTest() {
