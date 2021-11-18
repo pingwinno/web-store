@@ -35,4 +35,8 @@ public class ProductService {
         ProductUtil.escapeProduct(product);
         productRepository.update(product);
     }
+
+    public void deleteProduct(long id) {
+        productRepository.delete(id);
+    }
 }
