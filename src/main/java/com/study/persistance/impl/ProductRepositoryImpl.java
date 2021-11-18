@@ -1,13 +1,15 @@
 package com.study.persistance.impl;
 
+import com.study.model.Product;
 import com.study.persistance.ProductRepository;
 import com.study.persistance.factory.EntityManagerStorage;
-import com.study.model.Product;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 public class ProductRepositoryImpl implements ProductRepository {
     private final EntityManagerStorage entityManagerStorage;
 
@@ -47,11 +49,21 @@ public class ProductRepositoryImpl implements ProductRepository {
             em.getTransaction()
               .begin();
             em.persist(product);
-
-        } catch (Exception e) {
+        } finally {
             em.getTransaction()
-              .rollback();
-            throw new RuntimeException(e);
+              .commit();
+            em.close();
+        }
+        return product;
+    }
+
+    @Override
+    public Product update(Product product) {
+        var em = entityManagerStorage.getEntityManager();
+        try {
+            em.getTransaction()
+              .begin();
+            em.merge(product);
         } finally {
             em.getTransaction()
               .commit();
