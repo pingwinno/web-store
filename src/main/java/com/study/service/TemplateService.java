@@ -17,10 +17,7 @@ public class TemplateService {
 
     @SneakyThrows
     public TemplateService() {
-        cfg.setDirectoryForTemplateLoading(new File(this.getClass()
-                                                        .getClassLoader()
-                                                        .getResource("templates")
-                                                        .toURI()));
+        cfg.setClassForTemplateLoading(this.getClass(), "/templates");
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         cfg.setLogTemplateExceptions(false);
