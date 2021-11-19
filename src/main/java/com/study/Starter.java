@@ -14,7 +14,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 
 public class Starter {
     public static void main(String[] args) throws Exception {
-        try (var entityManagerStorage = new EntityManagerStorage("store-persistence");) {
+        try (var entityManagerStorage = new EntityManagerStorage("store-persistence")) {
             var productRepository = new ProductRepositoryImpl(entityManagerStorage);
             var productService = new ProductService(productRepository);
             var templateService = new TemplateService();
@@ -33,6 +33,7 @@ public class Starter {
             Server server = new Server(8080);
             server.setHandler(context);
             server.start();
+            server.join();
         }
     }
 }
