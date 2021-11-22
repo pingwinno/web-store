@@ -1,7 +1,7 @@
 package com.study.web.servlet;
 
-import com.study.web.template.TemplateProvider;
 import com.study.service.ProductService;
+import com.study.web.template.TemplateProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,7 +29,7 @@ public class ProductListServlet extends HttpServlet {
             var params = Map.of("products", productService.getAll());
             var data = templateProvider.writePage(params, "list.ftl");
             resp.getOutputStream()
-                .write(data);
+                    .write(data);
         } catch (Throwable e) {
             ServletException se = new ServletException(e.getMessage(), e);
             se.initCause(e);

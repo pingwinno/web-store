@@ -8,16 +8,14 @@ import org.junit.jupiter.api.Test;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JpaProductRepositoryTest {
     private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("test-store-persistence");
     private final ProductRepository productRepository = new JpaProductRepository(entityManagerFactory);
     private Product product = Product.builder()
                                      .name("book")
+                                     .description("This is some awesome book.")
                                      .price(9.99)
                                      .build();
 
@@ -72,4 +70,20 @@ public class JpaProductRepositoryTest {
                                     .isEmpty());
     }
 
+    @Test
+    void should_returnProduct_when_saveOneRecordAndSearch() {
+        product = productRepository.save(product);
+        assertFalse(productRepository.findAll()
+                                     .isEmpty());
+        assertTrue(productRepository.search("awesome").contains(product));
+    }
+
+
+    @Test
+    void should_returnEmptyList_when_saveOneRecordAndSearch() {
+        product = productRepository.save(product);
+        assertFalse(productRepository.findAll()
+                                     .isEmpty());
+        assertFalse(productRepository.search("bad").contains(product));
+    }
 }

@@ -11,6 +11,8 @@ public interface ProductRepository {
 
     Optional<Product> findById(long id);
 
+    List<Product> search(String query);
+
     Product save(Product product);
 
     Product update(Product product);

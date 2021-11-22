@@ -1,19 +1,8 @@
 package com.study.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.PrePersist;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -25,13 +14,15 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 @NamedQueries({
         @NamedQuery(name = "product.findAll", query = "SELECT p FROM Product p"),
-        @NamedQuery(name = "product.findById", query = "SELECT p FROM Product p WHERE p.id = :id")
+        @NamedQuery(name = "product.findById", query = "SELECT p FROM Product p WHERE p.id = :id"),
+        @NamedQuery(name = "product.search", query = "SELECT p FROM Product p WHERE p.name LIKE :name OR p.description LIKE :description")
 })
 public class Product {
     @Id
     @GeneratedValue
     private long id;
     private String name;
+    private String description;
     private double price;
     @Column(updatable = false)
     private LocalDate creationDate;

@@ -1,8 +1,8 @@
 package com.study.web.servlet;
 
 import com.study.model.Product;
-import com.study.web.template.TemplateProvider;
 import com.study.service.ProductService;
+import com.study.web.template.TemplateProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +26,7 @@ public class ProductAddServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_OK);
             var data = templateProvider.writePage("add.ftl");
             resp.getOutputStream()
-                .write(data);
+                    .write(data);
         } catch (Throwable e) {
             ServletException se = new ServletException(e.getMessage(), e);
             se.initCause(e);
@@ -39,9 +39,9 @@ public class ProductAddServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var product = Product.builder()
-                                 .name(req.getParameter("productName"))
-                                 .price(Double.parseDouble(req.getParameter("price")))
-                                 .build();
+                    .name(req.getParameter("productName"))
+                    .price(Double.parseDouble(req.getParameter("price")))
+                    .build();
             productService.update(product);
             resp.sendRedirect("/");
         } catch (Throwable e) {

@@ -1,6 +1,5 @@
 package com.study.web.template;
 
-import com.study.model.Product;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
@@ -8,8 +7,6 @@ import lombok.SneakyThrows;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class TemplateProvider {

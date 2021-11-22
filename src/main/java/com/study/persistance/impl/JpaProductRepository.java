@@ -9,8 +9,11 @@ import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
+import static java.text.MessageFormat.format;
+
 @Slf4j
 public class JpaProductRepository implements ProductRepository {
+    private static final String SQL_WILDCARD_TEMPLATE = "%{0}%";
     private final EntityManagerFactory entityManagerFactory;
 
     public JpaProductRepository(EntityManagerFactory entityManagerFactory) {
@@ -22,7 +25,21 @@ public class JpaProductRepository implements ProductRepository {
         var em = entityManagerFactory.createEntityManager();
         try {
             return em.createNamedQuery("product.findAll")
-                     .getResultList();
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Product> search(String wordForSearch) {
+        var em = entityManagerFactory.createEntityManager();
+        try {
+            var wordWithWildcards = format(SQL_WILDCARD_TEMPLATE, wordForSearch);
+            Query query = em.createNamedQuery("product.search");
+            query.setParameter("name", wordWithWildcards);
+            query.setParameter("description", wordWithWildcards);
+            return query.getResultList();
         } finally {
             em.close();
         }
@@ -35,8 +52,8 @@ public class JpaProductRepository implements ProductRepository {
             Query query = em.createNamedQuery("product.findById");
             query.setParameter("id", id);
             return query.getResultList()
-                        .stream()
-                        .findFirst();
+                    .stream()
+                    .findFirst();
         } finally {
             em.close();
         }

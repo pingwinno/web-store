@@ -21,8 +21,8 @@ public class ProductService {
 
     public Product getById(long id) {
         return productRepository.findById(id)
-                                .orElseThrow(() -> new NotFoundException(MessageFormat
-                                        .format("Product with id {0} not found", id)));
+                .orElseThrow(() -> new NotFoundException(MessageFormat
+                        .format("Product with id {0} not found", id)));
     }
 
     public void create(Product product) {
