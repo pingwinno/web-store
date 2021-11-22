@@ -3,7 +3,9 @@ package com.study.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +18,8 @@ import java.time.LocalDate;
 
 @Entity
 @Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -31,30 +35,6 @@ public class Product {
     private double price;
     @Column(updatable = false)
     private LocalDate creationDate;
-
-    public long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public LocalDate getCreationDate() {
-        return creationDate;
-    }
 
     @PrePersist
     public void setCreationDate() {

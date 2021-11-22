@@ -22,7 +22,6 @@ public class Starter {
     public static void main(String[] args) throws Exception {
         var entityManagerFactory = Persistence.createEntityManagerFactory(getPersistence());
         try {
-
             var productRepository = new JpaProductRepository(entityManagerFactory);
             var productService = new ProductService(productRepository);
             var templateProvider = new TemplateProvider();

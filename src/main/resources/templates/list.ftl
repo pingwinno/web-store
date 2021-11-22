@@ -25,6 +25,7 @@
         <th scope="col">#</th>
         <th scope="col">Product Name</th>
         <th scope="col">Product Price</th>
+        <th scope="col">Description</th>
         <th scope="col">Creation Date</th>
         <th scope="col">Actions</th>
     </tr>
@@ -34,11 +35,12 @@
     <tr>
         <td>${product.id}</td>
         <td>${product.name}</td>
+        <td>${product.description}</td>
         <td>${product.price}</td>
         <td>${product.creationDate}</td>
         <td>
             <a class="btn btn-primary" href="/edit/${product.id}" role="button">Edit</a>
-            <a class="btn btn-danger"  href="/delete/${product.id}" role="button">Delete</a>
+            <a class="btn btn-danger" href="/delete/${product.id}" role="button">Delete</a>
         </td>
         </#list>
     </tbody>

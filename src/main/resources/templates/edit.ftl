@@ -28,6 +28,10 @@
         <label for="price" class="form-label text-white">Price</label>
         <input name="price" type="number" step="0.01" class="form-control" id="price" value="${product.price}">
     </div>
+    <div class="mb-3">
+        <label for="description" class="form-label text-white">Product Name</label>
+        <input name="description" type="text" class="form-control" id="description" value="${product.description}">
+    </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
