@@ -2,24 +2,24 @@ package com.study.persistance.impl;
 
 import com.study.model.Product;
 import com.study.persistance.ProductRepository;
-import com.study.persistance.factory.EntityManagerStorage;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-public class ProductRepositoryImpl implements ProductRepository {
-    private final EntityManagerStorage entityManagerStorage;
+public class JpaProductRepository implements ProductRepository {
+    private final EntityManagerFactory entityManagerFactory;
 
-    public ProductRepositoryImpl(EntityManagerStorage entityManagerStorage) {
-        this.entityManagerStorage = entityManagerStorage;
+    public JpaProductRepository(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     @Override
     public List<Product> findAll() {
-        var em = entityManagerStorage.getEntityManager();
+        var em = entityManagerFactory.createEntityManager();
         try {
             return em.createNamedQuery("product.findAll")
                      .getResultList();
@@ -30,7 +30,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Optional<Product> findById(long id) {
-        var em = entityManagerStorage.getEntityManager();
+        var em = entityManagerFactory.createEntityManager();
         try {
             Query query = em.createNamedQuery("product.findById");
             query.setParameter("id", id);
@@ -44,14 +44,17 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product save(Product product) {
-        var em = entityManagerStorage.getEntityManager();
+        var em = entityManagerFactory.createEntityManager();
+        var transaction = em.getTransaction();
         try {
-            em.getTransaction()
-              .begin();
+            transaction.begin();
             em.persist(product);
+            transaction.commit();
+        } catch (Exception e) {
+            log.error("Can't save entity", e);
+            transaction.rollback();
+            throw new RuntimeException(e);
         } finally {
-            em.getTransaction()
-              .commit();
             em.close();
         }
         return product;
@@ -59,14 +62,17 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product update(Product product) {
-        var em = entityManagerStorage.getEntityManager();
+        var em = entityManagerFactory.createEntityManager();
+        var transaction = em.getTransaction();
         try {
-            em.getTransaction()
-              .begin();
+            transaction.begin();
             em.merge(product);
+            transaction.commit();
+        } catch (Exception e) {
+            log.error("Can't update entity", e);
+            transaction.rollback();
+            throw new RuntimeException(e);
         } finally {
-            em.getTransaction()
-              .commit();
             em.close();
         }
         return product;
@@ -74,19 +80,18 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public void delete(long id) {
-        var em = entityManagerStorage.getEntityManager();
+        var em = entityManagerFactory.createEntityManager();
+        var transaction = em.getTransaction();
         try {
-            em.getTransaction()
-              .begin();
+            transaction.begin();
             var product = em.find(Product.class, id);
             em.remove(product);
+            transaction.commit();
         } catch (Exception e) {
-            em.getTransaction()
-              .rollback();
+            log.error("Can't delete entity", e);
+            transaction.rollback();
             throw new RuntimeException(e);
         } finally {
-            em.getTransaction()
-              .commit();
             em.close();
         }
     }

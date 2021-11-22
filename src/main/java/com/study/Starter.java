@@ -1,30 +1,36 @@
 package com.study;
 
-import com.study.persistance.factory.EntityManagerStorage;
-import com.study.persistance.impl.ProductRepositoryImpl;
-import com.study.presentation.ProductAddServlet;
-import com.study.presentation.ProductDeleteServlet;
-import com.study.presentation.ProductEditServlet;
-import com.study.presentation.ProductListServlet;
+import com.study.persistance.impl.JpaProductRepository;
 import com.study.service.ProductService;
-import com.study.service.TemplateService;
+import com.study.web.servlet.ProductAddServlet;
+import com.study.web.servlet.ProductDeleteServlet;
+import com.study.web.servlet.ProductEditServlet;
+import com.study.web.servlet.ProductListServlet;
+import com.study.web.template.TemplateProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import javax.persistence.Persistence;
+
+import static com.study.ConfigProvider.getPersistence;
+import static com.study.ConfigProvider.getPort;
+
 @Slf4j
 public class Starter {
     public static void main(String[] args) throws Exception {
-        int port = 8080;
-        try (var entityManagerStorage = new EntityManagerStorage("store-persistence")) {
-            var productRepository = new ProductRepositoryImpl(entityManagerStorage);
-            var productService = new ProductService(productRepository);
-            var templateService = new TemplateService();
 
-            var productListServlet = new ProductListServlet(productService, templateService);
-            var productAddServlet = new ProductAddServlet(productService);
-            var productEditServlet = new ProductEditServlet(productService, templateService);
+        var entityManagerFactory = Persistence.createEntityManagerFactory(getPersistence());
+        try {
+
+            var productRepository = new JpaProductRepository(entityManagerFactory);
+            var productService = new ProductService(productRepository);
+            var templateProvider = new TemplateProvider();
+
+            var productListServlet = new ProductListServlet(productService, templateProvider);
+            var productAddServlet = new ProductAddServlet(productService, templateProvider);
+            var productEditServlet = new ProductEditServlet(productService, templateProvider);
             var productDeleteServlet = new ProductDeleteServlet(productService);
 
             ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -32,16 +38,13 @@ public class Starter {
             context.addServlet(new ServletHolder(productEditServlet), "/edit/*");
             context.addServlet(new ServletHolder(productAddServlet), "/add");
             context.addServlet(new ServletHolder(productListServlet), "/*");
-            var portString = System.getenv("PORT");
-            try {
-                port = Integer.parseInt(portString);
-            }catch (NumberFormatException e){
-                log.warn("Can't set port from env. Default port is 8080");
-            }
-            Server server = new Server(port);
+
+            Server server = new Server(getPort());
             server.setHandler(context);
             server.start();
             server.join();
+        } finally {
+            entityManagerFactory.close();
         }
     }
 }

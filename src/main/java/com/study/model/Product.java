@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Entity
@@ -21,8 +20,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @EqualsAndHashCode
 @NamedQueries({
-        @NamedQuery(name = "product.findAll",query = "SELECT p FROM Product p"),
-        @NamedQuery(name = "product.findById",query = "SELECT p FROM Product p WHERE p.id = :id")
+        @NamedQuery(name = "product.findAll", query = "SELECT p FROM Product p"),
+        @NamedQuery(name = "product.findById", query = "SELECT p FROM Product p WHERE p.id = :id")
 })
 public class Product {
     @Id
@@ -31,7 +30,7 @@ public class Product {
     private String name;
     private double price;
     @Column(updatable = false)
-    private Date creationDate;
+    private LocalDate creationDate;
 
     public long getId() {
         return id;
@@ -53,12 +52,12 @@ public class Product {
         this.price = price;
     }
 
-    public Date getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
     @PrePersist
     public void setCreationDate() {
-        creationDate = Date.valueOf(LocalDate.now());
+        creationDate = LocalDate.now();
     }
 }

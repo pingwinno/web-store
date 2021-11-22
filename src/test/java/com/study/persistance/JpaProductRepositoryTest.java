@@ -1,19 +1,21 @@
 package com.study.persistance;
 
 import com.study.model.Product;
-import com.study.persistance.factory.EntityManagerStorage;
-import com.study.persistance.impl.ProductRepositoryImpl;
+import com.study.persistance.impl.JpaProductRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ProductRepositoryImplTest {
-    private EntityManagerStorage entityManagerStorage = new EntityManagerStorage("test-store-persistence");
-    private final ProductRepository productRepository = new ProductRepositoryImpl(entityManagerStorage);
+public class JpaProductRepositoryTest {
+    private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("test-store-persistence");
+    private final ProductRepository productRepository = new JpaProductRepository(entityManagerFactory);
     private Product product = Product.builder()
                                      .name("book")
                                      .price(9.99)
@@ -21,7 +23,7 @@ public class ProductRepositoryImplTest {
 
     @AfterEach
     void close() {
-        entityManagerStorage.close();
+        entityManagerFactory.close();
     }
 
     @Test
