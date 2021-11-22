@@ -25,7 +25,7 @@ public class JpaProductRepository implements ProductRepository {
         var em = entityManagerFactory.createEntityManager();
         try {
             return em.createNamedQuery("product.findAll")
-                    .getResultList();
+                     .getResultList();
         } finally {
             em.close();
         }
@@ -52,8 +52,8 @@ public class JpaProductRepository implements ProductRepository {
             Query query = em.createNamedQuery("product.findById");
             query.setParameter("id", id);
             return query.getResultList()
-                    .stream()
-                    .findFirst();
+                        .stream()
+                        .findFirst();
         } finally {
             em.close();
         }

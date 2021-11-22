@@ -11,12 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 
 @Slf4j
-public class ProductListServlet extends HttpServlet {
-
+public class ProductSearchServlet extends HttpServlet {
     private final ProductService productService;
     private final TemplateProvider templateProvider;
 
-    public ProductListServlet(ProductService productService, TemplateProvider templateProvider) {
+    public ProductSearchServlet(ProductService productService, TemplateProvider templateProvider) {
         this.productService = productService;
         this.templateProvider = templateProvider;
     }
@@ -24,10 +23,11 @@ public class ProductListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
+            var resultMap = Map.of("products",
+                    productService.search(req.getParameter("searchInput")));
             resp.setContentType("text/html;charset=utf-8");
             resp.setStatus(HttpServletResponse.SC_OK);
-            var params = Map.of("products", productService.getAll());
-            var data = templateProvider.writePage(params, "list.ftl");
+            var data = templateProvider.writePage(resultMap, "search.ftl");
             resp.getOutputStream()
                 .write(data);
         } catch (Throwable e) {

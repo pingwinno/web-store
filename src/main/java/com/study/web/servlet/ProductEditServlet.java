@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.util.Map;
 
 @Slf4j
@@ -35,7 +34,7 @@ public class ProductEditServlet extends HttpServlet {
             var params = Map.of("product", productService.getById(id));
             var data = templateProvider.writePage(params, "edit.ftl");
             resp.getOutputStream()
-                    .write(data);
+                .write(data);
         } catch (Throwable e) {
             ServletException se = new ServletException(e.getMessage(), e);
             se.initCause(e);
@@ -45,15 +44,16 @@ public class ProductEditServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
             var url = req.getRequestURI();
             var id = getIdFromPath(url);
             var product = Product.builder()
-                    .id(id)
-                    .name(req.getParameter("productName"))
-                    .price(Double.parseDouble(req.getParameter("price")))
-                    .build();
+                                 .id(id)
+                                 .name(req.getParameter("productName"))
+                                 .description("description")
+                                 .price(Double.parseDouble(req.getParameter("price")))
+                                 .build();
             productService.update(product);
             resp.sendRedirect("/");
         } catch (Throwable e) {

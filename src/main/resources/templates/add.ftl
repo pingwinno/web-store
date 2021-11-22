@@ -20,15 +20,11 @@
     </ul>
 </header>
 <form action="/add" method="POST">
-    <div class="mb-3">
+    <div class="form-group my-2 my-lg-0">
         <label for="productName" class="form-label text-white">Product Name</label>
         <input name="productName" type="text" class="form-control" id="productName">
-    </div>
-    <div class="mb-3">
         <label for="price" class="form-label text-white">Price</label>
         <input name="price" type="number" step="0.01" class="form-control" id="price">
-    </div>
-    <div class="mb-3">
         <label for="description" class="form-label text-white">Product Name</label>
         <input name="description" type="text" class="form-control" id="description">
     </div>

@@ -2,10 +2,7 @@ package com.study;
 
 import com.study.persistance.impl.JpaProductRepository;
 import com.study.service.ProductService;
-import com.study.web.servlet.ProductAddServlet;
-import com.study.web.servlet.ProductDeleteServlet;
-import com.study.web.servlet.ProductEditServlet;
-import com.study.web.servlet.ProductListServlet;
+import com.study.web.servlet.*;
 import com.study.web.template.TemplateProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Server;
@@ -29,9 +26,11 @@ public class Starter {
             var productListServlet = new ProductListServlet(productService, templateProvider);
             var productAddServlet = new ProductAddServlet(productService, templateProvider);
             var productEditServlet = new ProductEditServlet(productService, templateProvider);
+            var productSearchServlet = new ProductSearchServlet(productService, templateProvider);
             var productDeleteServlet = new ProductDeleteServlet(productService);
 
             ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+            context.addServlet(new ServletHolder(productSearchServlet), "/search");
             context.addServlet(new ServletHolder(productDeleteServlet), "/delete/*");
             context.addServlet(new ServletHolder(productEditServlet), "/edit/*");
             context.addServlet(new ServletHolder(productAddServlet), "/add");
