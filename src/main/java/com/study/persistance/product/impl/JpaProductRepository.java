@@ -1,7 +1,7 @@
-package com.study.persistance.impl;
+package com.study.persistance.product.impl;
 
 import com.study.model.Product;
-import com.study.persistance.ProductRepository;
+import com.study.persistance.product.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.EntityManagerFactory;

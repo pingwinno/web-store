@@ -1,4 +1,4 @@
-package com.study.persistance;
+package com.study.persistance.product;
 
 import com.study.model.Product;
 

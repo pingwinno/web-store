@@ -1,6 +1,6 @@
 package com.study;
 
-import com.study.persistance.impl.JpaProductRepository;
+import com.study.persistance.product.impl.JpaProductRepository;
 import com.study.service.ProductService;
 import com.study.web.servlet.*;
 import com.study.web.template.TemplateProvider;

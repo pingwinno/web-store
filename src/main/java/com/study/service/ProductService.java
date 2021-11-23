@@ -2,7 +2,7 @@ package com.study.service;
 
 import com.study.exception.NotFoundException;
 import com.study.model.Product;
-import com.study.persistance.ProductRepository;
+import com.study.persistance.product.ProductRepository;
 
 import java.text.MessageFormat;
 import java.util.List;

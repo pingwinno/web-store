@@ -1,7 +1,8 @@
 package com.study.persistance;
 
 import com.study.model.Product;
-import com.study.persistance.impl.JpaProductRepository;
+import com.study.persistance.product.ProductRepository;
+import com.study.persistance.product.impl.JpaProductRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
