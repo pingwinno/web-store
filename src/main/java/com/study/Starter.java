@@ -1,7 +1,9 @@
 package com.study;
 
 import com.study.persistance.product.impl.JpaProductRepository;
+import com.study.persistance.user.impl.JpaUserRepository;
 import com.study.service.ProductService;
+import com.study.service.SecurityService;
 import com.study.web.servlet.*;
 import com.study.web.template.TemplateProvider;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +22,13 @@ public class Starter {
         var entityManagerFactory = Persistence.createEntityManagerFactory(getPersistence());
         try {
             var productRepository = new JpaProductRepository(entityManagerFactory);
+            var userRepository = new JpaUserRepository(entityManagerFactory);
             var productService = new ProductService(productRepository);
             var templateProvider = new TemplateProvider();
+            var tokenStorage = new TokenStorage();
+            var securityService = new SecurityService(userRepository, tokenStorage);
 
+            var loginServlet = new LoginServlet(securityService, templateProvider);
             var productListServlet = new ProductListServlet(productService, templateProvider);
             var productAddServlet = new ProductAddServlet(productService, templateProvider);
             var productEditServlet = new ProductEditServlet(productService, templateProvider);
@@ -30,6 +36,7 @@ public class Starter {
             var productDeleteServlet = new ProductDeleteServlet(productService);
 
             ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+            context.addServlet(new ServletHolder(loginServlet), "/login");
             context.addServlet(new ServletHolder(productSearchServlet), "/search");
             context.addServlet(new ServletHolder(productDeleteServlet), "/delete/*");
             context.addServlet(new ServletHolder(productEditServlet), "/edit/*");

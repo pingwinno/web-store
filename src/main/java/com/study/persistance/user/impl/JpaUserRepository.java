@@ -1,89 +1,76 @@
 package com.study.persistance.user.impl;
 
-import com.study.model.Product;
 import com.study.model.User;
 import com.study.persistance.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.SessionFactory;
 
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 public class JpaUserRepository implements UserRepository {
-    private final EntityManagerFactory entityManagerFactory;
+    private final SessionFactory sessionFactory;
 
     public JpaUserRepository(EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
+        this.sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
     }
-
 
     @Override
     public Optional<User> findByName(String name) {
-        var em = entityManagerFactory.createEntityManager();
-        try {
-            Query query = em.createNamedQuery("users.findByName");
-            query.setParameter("name", name);
-            return query.getResultList()
-                        .stream()
-                        .findFirst();
-        } finally {
-            em.close();
+        try (var session = sessionFactory.openSession()) {
+            return Optional.ofNullable(session.get(User.class, name));
         }
     }
 
     @Override
-    public User save(User user) {
-        var em = entityManagerFactory.createEntityManager();
-        var transaction = em.getTransaction();
-        try {
+    public User save(User product) {
+        var session = sessionFactory.openSession();
+        var transaction = session.getTransaction();
+        try (session) {
             transaction.begin();
-            em.persist(user);
+            session.persist(product);
             transaction.commit();
         } catch (Exception e) {
             log.error("Can't save entity", e);
             transaction.rollback();
             throw new RuntimeException(e);
-        } finally {
-            em.close();
         }
-        return user;
+        return product;
     }
 
     @Override
-    public User update(User user) {
-        var em = entityManagerFactory.createEntityManager();
-        var transaction = em.getTransaction();
-        try {
+    public User updatePassword(User user) {
+        var session = sessionFactory.openSession();
+        var transaction = session.getTransaction();
+        try (session) {
             transaction.begin();
-            em.merge(user);
+            var loadedEntity = session.load(User.class, user.getName());
+            loadedEntity.setPassword(user.getPassword());
+            loadedEntity.setSalt(user.getSalt());
+            loadedEntity.setRole(user.getRole());
             transaction.commit();
         } catch (Exception e) {
             log.error("Can't update entity", e);
             transaction.rollback();
             throw new RuntimeException(e);
-        } finally {
-            em.close();
         }
         return user;
     }
 
     @Override
     public void delete(long id) {
-        var em = entityManagerFactory.createEntityManager();
-        var transaction = em.getTransaction();
-        try {
+        var session = sessionFactory.openSession();
+        var transaction = session.getTransaction();
+        try (session) {
             transaction.begin();
-            var product = em.find(Product.class, id);
-            em.remove(product);
+            var product = session.load(User.class, id);
+            session.remove(product);
             transaction.commit();
         } catch (Exception e) {
             log.error("Can't delete entity", e);
             transaction.rollback();
             throw new RuntimeException(e);
-        } finally {
-            em.close();
         }
     }
 }

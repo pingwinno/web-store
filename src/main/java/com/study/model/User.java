@@ -1,9 +1,11 @@
 package com.study.model;
 
-import com.study.Role;
+import com.study.model.enums.Role;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Builder
@@ -12,13 +14,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-@NamedQueries({
-        @NamedQuery(name = "users.findByName", query = "SELECT u FROM User u WHERE u.name = :name"),
-})
 @Table(name = "USERS")
 public class User {
     @Id
-    private Long id;
     private String name;
     private String password;
     private String salt;

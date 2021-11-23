@@ -3,7 +3,6 @@ package com.study.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
@@ -17,7 +16,7 @@ import java.time.LocalDate;
         @NamedQuery(name = "product.findAll", query = "SELECT p FROM Product p"),
         @NamedQuery(name = "product.findById", query = "SELECT p FROM Product p WHERE p.id = :id"),
 })
-public class Product implements Serializable {
+public class Product {
     @Id
     @GeneratedValue
     private Long id;
