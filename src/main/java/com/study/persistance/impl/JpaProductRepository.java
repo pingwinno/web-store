@@ -3,113 +3,102 @@ package com.study.persistance.impl;
 import com.study.model.Product;
 import com.study.persistance.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.SessionFactory;
 
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
-import static java.text.MessageFormat.format;
-
 @Slf4j
 public class JpaProductRepository implements ProductRepository {
-    private static final String SQL_WILDCARD_TEMPLATE = "%{0}%";
-    private final EntityManagerFactory entityManagerFactory;
+    private final SessionFactory sessionFactory;
 
     public JpaProductRepository(EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
+        this.sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
     }
 
     @Override
     public List<Product> findAll() {
-        var em = entityManagerFactory.createEntityManager();
-        try {
-            return em.createNamedQuery("product.findAll")
-                     .getResultList();
-        } finally {
-            em.close();
+        try (var session = sessionFactory.openSession()) {
+            return session.createNamedQuery("product.findAll", Product.class)
+                          .getResultList();
         }
     }
 
     @Override
     public List<Product> search(String wordForSearch) {
-        var em = entityManagerFactory.createEntityManager();
-        try {
-            var wordWithWildcards = format(SQL_WILDCARD_TEMPLATE, wordForSearch);
-            Query query = em.createNamedQuery("product.search");
-            query.setParameter("name", wordWithWildcards);
-            query.setParameter("description", wordWithWildcards);
+        try (var session = sessionFactory.openSession()) {
+            var criteriaBuilder = session.getCriteriaBuilder();
+            var criteriaQuery = criteriaBuilder.createQuery(Product.class);
+            var root = criteriaQuery.from(Product.class);
+            criteriaQuery.select(root).where(
+                    criteriaBuilder.or(
+                            criteriaBuilder.like(criteriaBuilder.upper(root.get("name")),
+                                    wordForSearch.toUpperCase()),
+                            criteriaBuilder.like(criteriaBuilder.upper(root.get("description")),
+                                    "%" + wordForSearch.toUpperCase() + "%")));
+            var query = session.createQuery(criteriaQuery);
             return query.getResultList();
-        } finally {
-            em.close();
         }
     }
 
     @Override
     public Optional<Product> findById(long id) {
-        var em = entityManagerFactory.createEntityManager();
-        try {
-            Query query = em.createNamedQuery("product.findById");
+        try (var session = sessionFactory.openSession()) {
+            var query = session.createNamedQuery("product.findById", Product.class);
             query.setParameter("id", id);
-            return query.getResultList()
-                        .stream()
-                        .findFirst();
-        } finally {
-            em.close();
+            return query.getResultStream().findFirst();
         }
     }
 
     @Override
     public Product save(Product product) {
-        var em = entityManagerFactory.createEntityManager();
-        var transaction = em.getTransaction();
-        try {
+        var session = sessionFactory.openSession();
+        var transaction = session.getTransaction();
+        try (session) {
             transaction.begin();
-            em.persist(product);
+            session.persist(product);
             transaction.commit();
         } catch (Exception e) {
             log.error("Can't save entity", e);
             transaction.rollback();
             throw new RuntimeException(e);
-        } finally {
-            em.close();
         }
         return product;
     }
 
     @Override
     public Product update(Product product) {
-        var em = entityManagerFactory.createEntityManager();
-        var transaction = em.getTransaction();
-        try {
+        var session = sessionFactory.openSession();
+        var transaction = session.getTransaction();
+        try (session) {
             transaction.begin();
-            em.merge(product);
+            var loadedEntity = session.load(Product.class, product.getId());
+            loadedEntity.setPrice(product.getPrice());
+            loadedEntity.setDescription(product.getDescription());
+            loadedEntity.setName(product.getName());
             transaction.commit();
         } catch (Exception e) {
             log.error("Can't update entity", e);
             transaction.rollback();
             throw new RuntimeException(e);
-        } finally {
-            em.close();
         }
         return product;
     }
 
     @Override
     public void delete(long id) {
-        var em = entityManagerFactory.createEntityManager();
-        var transaction = em.getTransaction();
-        try {
+        var session = sessionFactory.openSession();
+        var transaction = session.getTransaction();
+        try (session) {
             transaction.begin();
-            var product = em.find(Product.class, id);
-            em.remove(product);
+            var product = session.load(Product.class, id);
+            session.remove(product);
             transaction.commit();
         } catch (Exception e) {
             log.error("Can't delete entity", e);
             transaction.rollback();
             throw new RuntimeException(e);
-        } finally {
-            em.close();
         }
     }
 }
