@@ -16,7 +16,7 @@ public class JpaProductRepositoryTest {
     private final ProductRepository productRepository = new JpaProductRepository(entityManagerFactory);
     private Product product = Product.builder()
                                      .name("book")
-                                     .description("This is some awesome book.")
+                                     .description("This book is awesome.")
                                      .price(9.99)
                                      .build();
 
@@ -77,6 +77,14 @@ public class JpaProductRepositoryTest {
         assertFalse(productRepository.findAll()
                                      .isEmpty());
         assertTrue(productRepository.search("awesome").contains(product));
+    }
+
+    @Test
+    void should_returnProduct_when_saveOneRecordAndSearchFromStartOfDescription() {
+        product = productRepository.save(product);
+        assertFalse(productRepository.findAll()
+                                     .isEmpty());
+        assertTrue(productRepository.search("this").contains(product));
     }
 
 
