@@ -13,17 +13,28 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.flywaydb.core.Flyway;
 
 import javax.persistence.Persistence;
 import java.util.EnumSet;
 
-import static com.study.ConfigProvider.getPersistence;
-import static com.study.ConfigProvider.getPort;
+import static com.study.ConfigProvider.PERSISTENCE;
 
 @Slf4j
 public class Starter {
     public static void main(String[] args) throws Exception {
-        var entityManagerFactory = Persistence.createEntityManagerFactory(getPersistence());
+
+        var configProvider = new ConfigProvider();
+        configProvider.populateDriverFromEnv();
+        var flyway = Flyway.configure()
+                           .dataSource(configProvider.getDbUrl(),
+                                   configProvider.getDbUser(),
+                                   configProvider.getDbPassword())
+                           .load();
+        flyway.migrate();
+
+        var entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE,
+                configProvider.getProperties());
         try {
             var productRepository = new JpaProductRepository(entityManagerFactory);
             var userRepository = new JpaUserRepository(entityManagerFactory);
@@ -53,7 +64,7 @@ public class Starter {
 
             context.addFilter(new FilterHolder(securityFilter), "/*", EnumSet.allOf(DispatcherType.class));
 
-            Server server = new Server(getPort());
+            Server server = new Server(configProvider.getPort());
             server.setHandler(context);
             server.start();
             server.join();
