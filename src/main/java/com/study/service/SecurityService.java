@@ -43,6 +43,11 @@ public class SecurityService {
         throw new AuthenticationException();
     }
 
+    @SneakyThrows
+    public void logout(String token) {
+        tokenStorage.removeCookie(token);
+    }
+
     private Cookie generateCookie(User user) {
         var token = UUID.randomUUID().toString();
         var tokenEntity = UserToken.builder()

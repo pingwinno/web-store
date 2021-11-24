@@ -15,14 +15,15 @@
 <header class="p-3 bg-dark text-white">
     <form class="form-inline float-right" action="/search" method="GET">
         <input class="form-control mr-sm-2" name="searchInput" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" id="searchInput" type="submit">Search
-        </button>
+        <button class="btn btn-outline-success my-2 my-sm-0 mr-3" id="searchInput" type="submit">Search</button>
+        <a class="btn btn-warning" aria-current="page" href="/logout">Logout</a>
     </form>
     <ul class="nav nav-pills">
         <li class="nav-item">
             <a class="nav-link" aria-current="page" href="/add">Add Product</a>
         </li>
     </ul>
+
 </header>
 <table class="table table-striped table-dark">
     <thead>
