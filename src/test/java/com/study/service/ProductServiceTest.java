@@ -2,7 +2,7 @@ package com.study.service;
 
 import com.study.exception.NotFoundException;
 import com.study.model.Product;
-import com.study.persistance.ProductRepository;
+import com.study.persistance.product.ProductRepository;
 import org.apache.commons.text.StringEscapeUtils;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +35,7 @@ class ProductServiceTest {
     @Test
     void should_returnListOfProducts_when_callGetAllProducts() {
         when(productRepository.findAll()).thenReturn(PRODUCT_LIST);
-        assertEquals(PRODUCT_LIST, productService.getAllProducts());
+        assertEquals(PRODUCT_LIST, productService.getAll());
         verify(productRepository).findAll();
         verifyNoMoreInteractions(productRepository);
     }
@@ -44,7 +44,7 @@ class ProductServiceTest {
     void should_returnProduct_when_callGetProductWithExistingId() {
         var id = 1L;
         when(productRepository.findById(id)).thenReturn(Optional.of(FIRST_PRODUCT));
-        assertEquals(FIRST_PRODUCT, productService.getProductById(id));
+        assertEquals(FIRST_PRODUCT, productService.getById(id));
         verify(productRepository).findById(id);
         verifyNoMoreInteractions(productRepository);
     }
@@ -53,7 +53,7 @@ class ProductServiceTest {
     void should_throwNoFoundException_when_callGetProductWithExistingId() {
         var id = 1L;
         when(productRepository.findById(id)).thenReturn(Optional.empty());
-        assertThrows(NotFoundException.class, () -> productService.getProductById(id), "Product with id 1 not found");
+        assertThrows(NotFoundException.class, () -> productService.getById(id), "Product with id 1 not found");
         verify(productRepository).findById(id);
         verifyNoMoreInteractions(productRepository);
         System.out.println(StringEscapeUtils.escapeHtml4("<script>alert('test');</script>"));
@@ -62,7 +62,7 @@ class ProductServiceTest {
     @Test
     void should_escapeNameWithXssInjection_when_callCreate() {
         when(productRepository.save(productWithEscapedXss)).thenReturn(productWithEscapedXss);
-        productService.createProduct(productWithXss);
+        productService.create(productWithXss);
         verify(productRepository).save(productWithEscapedXss);
         verifyNoMoreInteractions(productRepository);
     }
@@ -70,7 +70,7 @@ class ProductServiceTest {
     @Test
     void should_escapeNameWithXssInjection_when_callUpdate() {
         when(productRepository.update(productWithEscapedXss)).thenReturn(productWithEscapedXss);
-        productService.updateProduct(productWithXss);
+        productService.update(productWithXss);
         verify(productRepository).update(productWithEscapedXss);
         verifyNoMoreInteractions(productRepository);
     }

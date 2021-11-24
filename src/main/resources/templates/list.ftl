@@ -13,11 +13,17 @@
 </head>
 <body>
 <header class="p-3 bg-dark text-white">
+    <form class="form-inline float-right" action="/search" method="GET">
+        <input class="form-control mr-sm-2" name="searchInput" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0 mr-3" id="searchInput" type="submit">Search</button>
+        <a class="btn btn-warning" aria-current="page" href="/logout">Logout</a>
+    </form>
     <ul class="nav nav-pills">
         <li class="nav-item">
             <a class="nav-link" aria-current="page" href="/add">Add Product</a>
         </li>
     </ul>
+
 </header>
 <table class="table table-striped table-dark">
     <thead>
@@ -25,6 +31,7 @@
         <th scope="col">#</th>
         <th scope="col">Product Name</th>
         <th scope="col">Product Price</th>
+        <th scope="col">Description</th>
         <th scope="col">Creation Date</th>
         <th scope="col">Actions</th>
     </tr>
@@ -34,11 +41,12 @@
     <tr>
         <td>${product.id}</td>
         <td>${product.name}</td>
+        <td>${product.description}</td>
         <td>${product.price}</td>
         <td>${product.creationDate}</td>
         <td>
             <a class="btn btn-primary" href="/edit/${product.id}" role="button">Edit</a>
-            <a class="btn btn-danger"  href="/delete/${product.id}" role="button">Delete</a>
+            <a class="btn btn-danger" href="/delete/${product.id}" role="button">Delete</a>
         </td>
         </#list>
     </tbody>

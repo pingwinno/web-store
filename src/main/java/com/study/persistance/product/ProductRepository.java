@@ -1,4 +1,4 @@
-package com.study.persistance;
+package com.study.persistance.product;
 
 import com.study.model.Product;
 
@@ -10,6 +10,8 @@ public interface ProductRepository {
     List<Product> findAll();
 
     Optional<Product> findById(long id);
+
+    List<Product> search(String query);
 
     Product save(Product product);
 

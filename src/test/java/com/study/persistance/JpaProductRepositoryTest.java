@@ -1,27 +1,28 @@
 package com.study.persistance;
 
 import com.study.model.Product;
-import com.study.persistance.factory.EntityManagerStorage;
-import com.study.persistance.impl.ProductRepositoryImpl;
+import com.study.persistance.product.ProductRepository;
+import com.study.persistance.product.impl.JpaProductRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
-public class ProductRepositoryImplTest {
-    private EntityManagerStorage entityManagerStorage = new EntityManagerStorage("test-store-persistence");
-    private final ProductRepository productRepository = new ProductRepositoryImpl(entityManagerStorage);
+import static org.junit.jupiter.api.Assertions.*;
+
+public class JpaProductRepositoryTest {
+    private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("test-store-persistence");
+    private final ProductRepository productRepository = new JpaProductRepository(entityManagerFactory);
     private Product product = Product.builder()
                                      .name("book")
+                                     .description("This book is awesome.")
                                      .price(9.99)
                                      .build();
 
     @AfterEach
     void close() {
-        entityManagerStorage.close();
+        entityManagerFactory.close();
     }
 
     @Test
@@ -70,4 +71,28 @@ public class ProductRepositoryImplTest {
                                     .isEmpty());
     }
 
+    @Test
+    void should_returnProduct_when_saveOneRecordAndSearch() {
+        product = productRepository.save(product);
+        assertFalse(productRepository.findAll()
+                                     .isEmpty());
+        assertTrue(productRepository.search("awesome").contains(product));
+    }
+
+    @Test
+    void should_returnProduct_when_saveOneRecordAndSearchFromStartOfDescription() {
+        product = productRepository.save(product);
+        assertFalse(productRepository.findAll()
+                                     .isEmpty());
+        assertTrue(productRepository.search("this").contains(product));
+    }
+
+
+    @Test
+    void should_returnEmptyList_when_saveOneRecordAndSearch() {
+        product = productRepository.save(product);
+        assertFalse(productRepository.findAll()
+                                     .isEmpty());
+        assertFalse(productRepository.search("bad").contains(product));
+    }
 }

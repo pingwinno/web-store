@@ -1,6 +1,6 @@
 package com.study.exception;
 
-public class NotFoundException extends RuntimeException{
+public class NotFoundException extends HttpException {
     public NotFoundException() {
     }
 
@@ -18,5 +18,10 @@ public class NotFoundException extends RuntimeException{
 
     public NotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    @Override
+    public int getResponseCode() {
+        return 404;
     }
 }

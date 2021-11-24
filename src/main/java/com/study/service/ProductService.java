@@ -2,8 +2,7 @@ package com.study.service;
 
 import com.study.exception.NotFoundException;
 import com.study.model.Product;
-import com.study.persistance.ProductRepository;
-import com.study.util.ProductUtil;
+import com.study.persistance.product.ProductRepository;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -16,27 +15,29 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<Product> getAllProducts() {
+    public List<Product> getAll() {
         return productRepository.findAll();
     }
 
-    public Product getProductById(long id) {
+    public Product getById(long id) {
         return productRepository.findById(id)
                                 .orElseThrow(() -> new NotFoundException(MessageFormat
                                         .format("Product with id {0} not found", id)));
     }
 
-    public void createProduct(Product product) {
-        ProductUtil.escapeProduct(product);
+    public List<Product> search(String query) {
+        return productRepository.search(query);
+    }
+
+    public void create(Product product) {
         productRepository.save(product);
     }
 
-    public void updateProduct(Product product) {
-        ProductUtil.escapeProduct(product);
+    public void update(Product product) {
         productRepository.update(product);
     }
 
-    public void deleteProduct(long id) {
+    public void delete(long id) {
         productRepository.delete(id);
     }
 }
