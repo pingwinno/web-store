@@ -25,7 +25,7 @@
         <input name="productName" type="text" class="form-control" id="productName" value="${product.name}">
         <label for="price" class="form-label text-white">Price</label>
         <input name="price" type="number" step="0.01" class="form-control" id="price" value="${product.price}">
-        <label for="description" class="form-label text-white">Product Name</label>
+        <label for="description" class="form-label text-white">Description</label>
         <input name="description" type="text" class="form-control" id="description" value="${product.description}">
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
