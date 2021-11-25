@@ -26,15 +26,15 @@ public class Starter {
 
         var configProvider = new ConfigProvider();
         configProvider.populateDriverFromEnv();
+        var entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE,
+                configProvider.getProperties());
         var flyway = Flyway.configure()
                            .dataSource(configProvider.getDbUrl(),
                                    configProvider.getDbUser(),
                                    configProvider.getDbPassword())
                            .load();
+        flyway.baseline();
         flyway.migrate();
-
-        var entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE,
-                configProvider.getProperties());
         try {
             var productRepository = new JpaProductRepository(entityManagerFactory);
             var userRepository = new JpaUserRepository(entityManagerFactory);

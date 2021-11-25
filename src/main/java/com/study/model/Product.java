@@ -19,11 +19,15 @@ import java.time.LocalDate;
 public class Product {
     @Id
     @GeneratedValue
+    @Column(name = "ID")
     private Long id;
+    @Column(name = "NAME")
     private String name;
+    @Column(name = "DESCRIPTION")
     private String description;
+    @Column(name = "PRICE")
     private double price;
-    @Column(updatable = false)
+    @Column(name = "CREATION_DATE", updatable = false)
     private LocalDate creationDate;
 
     @PrePersist

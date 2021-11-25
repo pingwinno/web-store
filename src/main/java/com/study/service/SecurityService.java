@@ -25,10 +25,13 @@ public class SecurityService {
         this.tokenStorage = tokenStorage;
     }
 
-    public boolean isTokenValid(String token, String path) {
+    public void validateToken(String token, String path) {
         var expiredTime = Instant.now().getEpochSecond() + DEFAULT_LIFETIME;
         var tokenEntity = tokenStorage.getTokenEntity(token);
-        return tokenEntity.isPresent() && tokenEntity.get().getTimeStamp() < expiredTime;
+        if (tokenEntity.isPresent() && tokenEntity.get().getTimeStamp() < expiredTime) {
+            return;
+        }
+        throw new AuthenticationException();
     }
 
     @SneakyThrows

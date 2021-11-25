@@ -12,7 +12,6 @@ public class ConfigProvider {
     public static final String PASSWORD = "hibernate.connection.password";
     public static final String PORT = "server.port";
     public static final String PERSISTENCE = "store-persistence";
-    public static final String DRIVER = "hibernate.connection.driver_class";
 
     private final Properties properties;
 
@@ -28,7 +27,6 @@ public class ConfigProvider {
         properties.setProperty(URL, getDbUrl());
         properties.setProperty(USER, getDbUser());
         properties.setProperty(PASSWORD, getDbPassword());
-        properties.setProperty(DRIVER, getDbDriver());
     }
 
     public int getPort() {
@@ -54,11 +52,6 @@ public class ConfigProvider {
     public String getDbPassword() {
         var password = System.getenv("DB_PASSWORD");
         return password != null ? password : properties.getProperty(PASSWORD);
-    }
-
-    public String getDbDriver() {
-        var driver = System.getenv("DB_DRIVER");
-        return driver != null ? driver : properties.getProperty(DRIVER);
     }
 
     public Properties getProperties() {

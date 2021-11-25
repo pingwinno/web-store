@@ -21,7 +21,10 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            securityService.logout(req.getCookies()[0].getValue());
+            var cookie = req.getCookies()[0];
+            securityService.logout(cookie.getValue());
+            cookie.setMaxAge(0);
+            resp.addCookie(cookie);
             resp.sendRedirect("/login");
         } catch (Throwable e) {
             ServletException se = new ServletException(e.getMessage(), e);

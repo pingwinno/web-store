@@ -43,7 +43,7 @@ public class SecurityFilter implements Filter {
         }
         var cookie = cookies[0];
         try {
-            service.isTokenValid(cookie.getValue(), path);
+            service.validateToken(cookie.getValue(), path);
         } catch (AuthorizationException e) {
             httpResponse.sendError(e.getResponseCode());
             return;
