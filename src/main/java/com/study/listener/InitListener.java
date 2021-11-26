@@ -1,11 +1,12 @@
 package com.study.listener;
 
 import com.study.ConfigProvider;
-import com.study.security.TokenStorage;
 import com.study.persistance.product.impl.JdbcProductRepository;
 import com.study.persistance.user.impl.JdbcUserRepository;
-import com.study.service.ProductService;
 import com.study.security.SecurityService;
+import com.study.security.TokenStorage;
+import com.study.service.ProductService;
+import com.study.service.UserService;
 import com.study.web.template.TemplateProvider;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -35,7 +36,8 @@ public class InitListener implements ServletContextListener {
         var productService = new ProductService(productRepository);
         var templateProvider = new TemplateProvider();
         var tokenStorage = new TokenStorage();
-        var securityService = new SecurityService(userRepository, tokenStorage);
+        var userService = new UserService(userRepository);
+        var securityService = new SecurityService(userService, tokenStorage);
         servletContextEvent.getServletContext().setAttribute(
                 PRODUCT_SERVICE.getName(),
                 productService);

@@ -69,10 +69,10 @@ public class JdbcUserRepository implements UserRepository {
 
     @SneakyThrows
     @Override
-    public void delete(long id) {
+    public void delete(String name) {
         try (var connection = dataSource.getConnection();
              var preparedStatement = connection.prepareStatement(DELETE)) {
-            preparedStatement.setLong(1, id);
+            preparedStatement.setString(1, name);
             preparedStatement.executeUpdate();
         }
     }

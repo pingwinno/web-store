@@ -57,12 +57,12 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(String name) {
         var session = sessionFactory.openSession();
         var transaction = session.getTransaction();
         try (session) {
             transaction.begin();
-            var product = session.load(User.class, id);
+            var product = session.load(User.class, name);
             session.remove(product);
             transaction.commit();
         } catch (Exception e) {

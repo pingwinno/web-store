@@ -5,7 +5,7 @@ import com.study.exception.AuthorizationException;
 import com.study.model.User;
 import com.study.model.UserToken;
 import com.study.model.enums.Role;
-import com.study.persistance.user.UserRepository;
+import com.study.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -31,11 +31,11 @@ public class SecurityService {
             Map.of(ADMIN, List.of(ROOT, SEARCH, EDIT, ADD, LOGIN, LOGOUT),
                     USER, List.of(ROOT, SEARCH, LOGIN, LOGOUT),
                     GUEST, List.of(ROOT, SEARCH, LOGIN));
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final TokenStorage tokenStorage;
 
-    public SecurityService(UserRepository userRepository, TokenStorage tokenStorage) {
-        this.userRepository = userRepository;
+    public SecurityService(UserService userService, TokenStorage tokenStorage) {
+        this.userService = userService;
         this.tokenStorage = tokenStorage;
     }
 
@@ -59,8 +59,8 @@ public class SecurityService {
     }
 
     public UserToken login(String userName, String password) {
-        var user = userRepository.findByName(userName)
-                                 .orElseThrow(AuthenticationException::new);
+        var user = userService.getByName(userName)
+                              .orElseThrow(AuthenticationException::new);
         var encodedPassword = DigestUtils.sha256Hex(password + user.getSalt());
         if (Objects.equals(encodedPassword, user.getPassword())) {
             return generateCookie(user);
