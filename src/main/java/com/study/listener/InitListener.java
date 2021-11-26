@@ -5,6 +5,7 @@ import com.study.persistance.product.impl.JdbcProductRepository;
 import com.study.persistance.user.impl.JdbcUserRepository;
 import com.study.security.SecurityService;
 import com.study.security.TokenStorage;
+import com.study.service.BasketService;
 import com.study.service.ProductService;
 import com.study.service.UserService;
 import com.study.web.template.TemplateProvider;
@@ -19,7 +20,6 @@ import static com.study.model.enums.ContextInstance.*;
 
 @Slf4j
 public class InitListener implements ServletContextListener {
-
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -38,6 +38,7 @@ public class InitListener implements ServletContextListener {
         var tokenStorage = new TokenStorage();
         var userService = new UserService(userRepository);
         var securityService = new SecurityService(userService, tokenStorage);
+        var basketService = new BasketService(productService);
         servletContextEvent.getServletContext().setAttribute(
                 PRODUCT_SERVICE.getName(),
                 productService);
@@ -50,6 +51,9 @@ public class InitListener implements ServletContextListener {
         servletContextEvent.getServletContext().setAttribute(
                 TOKEN_STORAGE.getName(),
                 tokenStorage);
+        servletContextEvent.getServletContext().setAttribute(
+                BASKET_SERVICE.getName(),
+                basketService);
     }
 
     @Override

@@ -20,7 +20,7 @@
     </form>
     <ul class="nav nav-pills">
         <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/add">Add Product</a>
+            <a class="nav-link" aria-current="page" href="/">Product List</a>
         </li>
     </ul>
 
@@ -45,8 +45,10 @@
         <td>${product.price}</td>
         <td>${product.creationDate}</td>
         <td>
-            <a class="btn btn-primary" href="/edit/${product.id}" role="button">Edit</a>
-            <a class="btn btn-danger" href="/delete/${product.id}" role="button">Delete</a>
+            <form action="/basket/delete" method="post">
+                <button type="submit" class="btn btn-warning" name="productId" value=${product.id}>delete from basket
+                </button>
+            </form>
         </td>
         </#list>
     </tbody>

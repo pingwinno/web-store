@@ -31,7 +31,7 @@
 
     <filter-mapping>
         <filter-name>TemplateFilter</filter-name>
-        <url-pattern>/search*</url-pattern>
+        <url-pattern>/search</url-pattern>
     </filter-mapping>
 
     <servlet>
@@ -85,6 +85,16 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>BasketServlet</servlet-name>
+        <servlet-class>com.study.web.servlet.BasketServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>BasketServlet</servlet-name>
+        <url-pattern>/basket/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>ProductSearchServlet</servlet-name>
         <servlet-class>com.study.web.servlet.ProductSearchServlet</servlet-class>
     </servlet>
@@ -103,4 +113,8 @@
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
+    <session-config>
+        <session-timeout>60</session-timeout>
+    </session-config>
 </web-app>

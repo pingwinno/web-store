@@ -35,10 +35,8 @@ public class ProductAddServlet extends HttpServlet {
             resp.getOutputStream()
                 .write(data);
         } catch (Throwable e) {
-            ServletException se = new ServletException(e.getMessage(), e);
-            se.initCause(e);
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             log.error("Fail to send response", e);
-            throw new RuntimeException(e);
         }
     }
 
@@ -53,10 +51,8 @@ public class ProductAddServlet extends HttpServlet {
             productService.create(product);
             resp.sendRedirect("/");
         } catch (Throwable e) {
-            ServletException se = new ServletException(e.getMessage(), e);
-            se.initCause(e);
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             log.error("Fail to send response", e);
-            throw new RuntimeException(e);
         }
     }
 }

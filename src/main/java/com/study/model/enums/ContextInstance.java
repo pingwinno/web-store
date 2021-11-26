@@ -4,7 +4,8 @@ public enum ContextInstance {
     SECURITY_SERVICE("SecurityService"),
     PRODUCT_SERVICE("ProductService"),
     TEMPLATE_PROVIDER("TemplateProvider"),
-    TOKEN_STORAGE("TokenStorage");
+    TOKEN_STORAGE("TokenStorage"),
+    BASKET_SERVICE("BasketService");
 
     private final String name;
 

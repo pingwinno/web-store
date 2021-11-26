@@ -29,10 +29,8 @@ public class ProductDeleteServlet extends HttpServlet {
             productService.delete(id);
             resp.sendRedirect("/");
         } catch (Throwable e) {
-            ServletException se = new ServletException(e.getMessage(), e);
-            se.initCause(e);
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             log.error("Fail to send response", e);
-            throw new RuntimeException(e);
         }
     }
 

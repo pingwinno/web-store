@@ -18,12 +18,6 @@
         <button class="btn btn-outline-success my-2 my-sm-0 mr-3" id="searchInput" type="submit">Search</button>
         <a class="btn btn-warning" aria-current="page" href="/login">Login</a>
     </form>
-    <ul class="nav nav-pills">
-        <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/add">Add Product</a>
-        </li>
-    </ul>
-
 </header>
 <table class="table table-striped table-dark">
     <thead>

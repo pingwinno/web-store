@@ -16,13 +16,9 @@
     <form class="form-inline float-right" action="/search" method="GET">
         <input class="form-control mr-sm-2" name="searchInput" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0 mr-3" id="searchInput" type="submit">Search</button>
+        <a type="button" class="btn btn-info my-2 my-sm-0 mr-3" href="/basket">Basket</a>
         <a class="btn btn-warning" aria-current="page" href="/logout">Logout</a>
     </form>
-    <ul class="nav nav-pills">
-        <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/add">Add Product</a>
-        </li>
-    </ul>
 
 </header>
 <table class="table table-striped table-dark">
@@ -45,8 +41,9 @@
         <td>${product.price}</td>
         <td>${product.creationDate}</td>
         <td>
-            <a class="btn btn-primary" href="/edit/${product.id}" role="button">Edit</a>
-            <a class="btn btn-danger" href="/delete/${product.id}" role="button">Delete</a>
+            <form action="/basket/add" method="post">
+                <button name="productId" class="btn btn-success" value=${product.id}>Add to basket</button>
+            </form>
         </td>
         </#list>
     </tbody>

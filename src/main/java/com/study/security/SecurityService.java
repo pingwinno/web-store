@@ -27,9 +27,10 @@ public class SecurityService {
     private final static Pattern EDIT = Pattern.compile("/edit/.*");
     private final static Pattern LOGIN = Pattern.compile("/login");
     private final static Pattern LOGOUT = Pattern.compile("/logout");
+    private final static Pattern BASKET = Pattern.compile("/basket.*");
     private static final Map<Role, List<Pattern>> allowedPaths =
             Map.of(ADMIN, List.of(ROOT, SEARCH, EDIT, ADD, LOGIN, LOGOUT),
-                    USER, List.of(ROOT, SEARCH, LOGIN, LOGOUT),
+                    USER, List.of(ROOT, SEARCH, LOGIN, LOGOUT, BASKET),
                     GUEST, List.of(ROOT, SEARCH, LOGIN));
     private final UserService userService;
     private final TokenStorage tokenStorage;
@@ -40,11 +41,11 @@ public class SecurityService {
     }
 
     public void validateToken(String token, String path) {
-        var expiredTime = Instant.now().getEpochSecond();
         var tokenEntity = tokenStorage.getTokenEntity(token);
         var role = GUEST;
-        if (tokenEntity.isPresent() && tokenEntity.get().getExpirationTime() < expiredTime) {
+        if (tokenEntity.isPresent() && tokenEntity.get().getExpirationTime() > Instant.now().getEpochSecond()) {
             role = tokenEntity.get().getUser().getRole();
+            log.info("user {} is {} ", tokenEntity.get().getUser().getName(), role);
         }
         validatePath(role, path);
     }

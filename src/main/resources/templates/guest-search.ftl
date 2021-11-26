@@ -13,6 +13,11 @@
 </head>
 <body>
 <header class="p-3 bg-dark text-white">
+    <form class="form-inline float-right" action="/search" method="GET">
+        <input class="form-control mr-sm-2" name="searchInput" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0 mr-3" id="searchInput" type="submit">Search</button>
+        <a class="btn btn-warning" aria-current="page" href="/login">Login</a>
+    </form>
     <ul class="nav nav-pills">
         <li class="nav-item">
             <a class="nav-link" aria-current="page" href="/">Product List</a>
@@ -27,7 +32,6 @@
         <th scope="col">Description</th>
         <th scope="col">Product Price</th>
         <th scope="col">Creation Date</th>
-        <th scope="col">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -38,10 +42,6 @@
         <td>${product.description}</td>
         <td>${product.price}</td>
         <td>${product.creationDate}</td>
-        <td>
-            <a class="btn btn-primary" href="/edit/${product.id}" role="button">Edit</a>
-            <a class="btn btn-danger" href="/delete/${product.id}" role="button">Delete</a>
-        </td>
         </#list>
     </tbody>
 </table>

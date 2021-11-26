@@ -39,7 +39,7 @@ public class TokenStorage {
         while (true) {
             var expiredTokens = tokenMap.values()
                                         .stream()
-                                        .filter(userToken -> userToken.getExpirationTime() > Instant.now().getEpochSecond())
+                                        .filter(userToken -> userToken.getExpirationTime() < Instant.now().getEpochSecond())
                                         .map(UserToken::getToken)
                                         .collect(Collectors.toList());
             for (String expiredToken : expiredTokens) {
