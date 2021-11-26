@@ -1,7 +1,7 @@
 package com.study.web.servlet;
 
 import com.study.exception.HttpException;
-import com.study.service.SecurityService;
+import com.study.security.SecurityService;
 import com.study.web.template.TemplateProvider;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

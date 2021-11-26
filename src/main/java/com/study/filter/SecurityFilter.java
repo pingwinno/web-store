@@ -3,7 +3,7 @@ package com.study.filter;
 import com.study.exception.AuthenticationException;
 import com.study.exception.AuthorizationException;
 import com.study.model.enums.ContextInstance;
-import com.study.service.SecurityService;
+import com.study.security.SecurityService;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;

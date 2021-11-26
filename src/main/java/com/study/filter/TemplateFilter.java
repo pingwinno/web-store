@@ -1,6 +1,6 @@
 package com.study.filter;
 
-import com.study.TokenStorage;
+import com.study.security.TokenStorage;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;

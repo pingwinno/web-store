@@ -1,6 +1,5 @@
-package com.study.service;
+package com.study.security;
 
-import com.study.TokenStorage;
 import com.study.exception.AuthenticationException;
 import com.study.exception.AuthorizationException;
 import com.study.model.User;
@@ -41,10 +40,10 @@ public class SecurityService {
     }
 
     public void validateToken(String token, String path) {
-        var expiredTime = Instant.now().getEpochSecond() + DEFAULT_LIFETIME;
+        var expiredTime = Instant.now().getEpochSecond();
         var tokenEntity = tokenStorage.getTokenEntity(token);
         var role = GUEST;
-        if (tokenEntity.isPresent() && tokenEntity.get().getTimeStamp() < expiredTime) {
+        if (tokenEntity.isPresent() && tokenEntity.get().getExpirationTime() < expiredTime) {
             role = tokenEntity.get().getUser().getRole();
         }
         validatePath(role, path);
@@ -77,7 +76,7 @@ public class SecurityService {
         var token = UUID.randomUUID().toString();
         var tokenEntity = UserToken.builder()
                                    .token(token)
-                                   .timeStamp(Instant.now().getEpochSecond())
+                                   .expirationTime(Instant.now().getEpochSecond() + DEFAULT_LIFETIME)
                                    .user(user)
                                    .build();
         tokenStorage.saveToken(tokenEntity);

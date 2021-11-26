@@ -1,11 +1,11 @@
 package com.study.listener;
 
 import com.study.ConfigProvider;
-import com.study.TokenStorage;
+import com.study.security.TokenStorage;
 import com.study.persistance.product.impl.JdbcProductRepository;
 import com.study.persistance.user.impl.JdbcUserRepository;
 import com.study.service.ProductService;
-import com.study.service.SecurityService;
+import com.study.security.SecurityService;
 import com.study.web.template.TemplateProvider;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -48,7 +48,6 @@ public class InitListener implements ServletContextListener {
         servletContextEvent.getServletContext().setAttribute(
                 TOKEN_STORAGE.getName(),
                 tokenStorage);
-
     }
 
     @Override

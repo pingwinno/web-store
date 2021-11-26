@@ -10,7 +10,7 @@ import java.util.Objects;
 public class UserToken {
     private String token;
     private User user;
-    private long timeStamp;
+    private long expirationTime;
 
     @Override
     public boolean equals(Object o) {

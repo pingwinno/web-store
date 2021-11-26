@@ -1,6 +1,6 @@
 package com.study.web.servlet;
 
-import com.study.service.SecurityService;
+import com.study.security.SecurityService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
