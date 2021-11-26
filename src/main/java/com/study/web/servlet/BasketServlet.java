@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +40,7 @@ public class BasketServlet extends HttpServlet {
             var basket = (List<Long>) req.getSession().getAttribute(BASKET);
             var params = basket != null
                     ? Map.of("products", basketService.getBasketProducts(basket))
-                    : Map.of("products",List.of());
+                    : Map.of("products", List.of());
             var data = templateProvider.writePage(params, "basket.ftl");
             resp.getOutputStream()
                 .write(data);

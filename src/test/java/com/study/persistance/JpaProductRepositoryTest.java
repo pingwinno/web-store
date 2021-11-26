@@ -14,11 +14,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class JpaProductRepositoryTest {
     private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("test-store-persistence");
     private final ProductRepository productRepository = new JpaProductRepository(entityManagerFactory);
-    private Product product = Product.builder()
-                                     .name("book")
-                                     .description("This book is awesome.")
-                                     .price(9.99)
-                                     .build();
+    private final Product product = Product.builder()
+                                           .name("book")
+                                           .description("This book is awesome.")
+                                           .price(9.99)
+                                           .build();
 
     @AfterEach
     void close() {

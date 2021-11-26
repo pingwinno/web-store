@@ -1,4 +1,4 @@
-package com.study.model;
+package com.study.security.model;
 
 import lombok.Builder;
 import lombok.Data;

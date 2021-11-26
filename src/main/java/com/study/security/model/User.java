@@ -1,4 +1,4 @@
-package com.study.model;
+package com.study.security.model;
 
 import com.study.model.enums.Role;
 import lombok.*;

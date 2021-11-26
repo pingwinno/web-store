@@ -2,10 +2,9 @@ package com.study.security;
 
 import com.study.exception.AuthenticationException;
 import com.study.exception.AuthorizationException;
-import com.study.model.User;
-import com.study.model.UserToken;
 import com.study.model.enums.Role;
-import com.study.service.UserService;
+import com.study.security.model.User;
+import com.study.security.model.UserToken;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 

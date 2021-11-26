@@ -1,8 +1,8 @@
 package com.study.persistance.user.impl;
 
-import com.study.model.User;
 import com.study.model.enums.Role;
 import com.study.persistance.user.UserRepository;
+import com.study.security.model.User;
 import lombok.SneakyThrows;
 
 import javax.sql.DataSource;

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -8,7 +7,9 @@
 <body>
 <table border=1>
     <#list products as product>
-    <tr><td>${product.name}<td>${product.price}
+    <tr>
+        <td>${product.name}
+        <td>${product.price}
             </#list>
 </table>
 

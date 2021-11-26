@@ -1,6 +1,6 @@
 package com.study.persistance.user;
 
-import com.study.model.User;
+import com.study.security.model.User;
 
 import java.util.Optional;
 

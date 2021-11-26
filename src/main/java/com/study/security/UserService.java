@@ -1,7 +1,7 @@
-package com.study.service;
+package com.study.security;
 
-import com.study.model.User;
 import com.study.persistance.user.UserRepository;
+import com.study.security.model.User;
 
 import java.util.Optional;
 

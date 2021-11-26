@@ -1,6 +1,6 @@
 package com.study.security;
 
-import com.study.model.UserToken;
+import com.study.security.model.UserToken;
 import lombok.SneakyThrows;
 
 import java.time.Instant;
