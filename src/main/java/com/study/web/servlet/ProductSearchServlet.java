@@ -15,6 +15,7 @@ import static com.study.model.enums.ContextInstance.TEMPLATE_PROVIDER;
 
 @Slf4j
 public class ProductSearchServlet extends HttpServlet {
+    private final static String SEARCH_TEMPLATE = "%s-search.ftl";
     private ProductService productService;
     private TemplateProvider templateProvider;
 
@@ -33,7 +34,8 @@ public class ProductSearchServlet extends HttpServlet {
                     productService.search(req.getParameter("searchInput")));
             resp.setContentType("text/html;charset=utf-8");
             resp.setStatus(HttpServletResponse.SC_OK);
-            var data = templateProvider.writePage(resultMap, "search.ftl");
+            var templateName = String.format(SEARCH_TEMPLATE, req.getAttribute("prefix"));
+            var data = templateProvider.writePage(resultMap, templateName);
             resp.getOutputStream()
                 .write(data);
         } catch (Throwable e) {

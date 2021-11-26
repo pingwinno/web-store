@@ -3,7 +3,8 @@ package com.study.model.enums;
 public enum ContextInstance {
     SECURITY_SERVICE("SecurityService"),
     PRODUCT_SERVICE("ProductService"),
-    TEMPLATE_PROVIDER("TemplateProvider");
+    TEMPLATE_PROVIDER("TemplateProvider"),
+    TOKEN_STORAGE("TokenStorage");
 
     private final String name;
 

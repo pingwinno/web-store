@@ -30,7 +30,7 @@ public class LogoutServlet extends HttpServlet {
             securityService.logout(cookie.getValue());
             cookie.setMaxAge(0);
             resp.addCookie(cookie);
-            resp.sendRedirect("/login");
+            resp.sendRedirect("/");
         } catch (Throwable e) {
             ServletException se = new ServletException(e.getMessage(), e);
             se.initCause(e);

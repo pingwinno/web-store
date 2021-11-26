@@ -111,7 +111,7 @@ public class JdbcProductRepository implements ProductRepository {
     @Override
     public void update(Product product) {
         try (var connection = dataSource.getConnection();
-             var preparedStatement = connection.prepareStatement(UPDATE);) {
+             var preparedStatement = connection.prepareStatement(UPDATE)) {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setString(2, product.getDescription());
             preparedStatement.setDouble(3, product.getPrice());

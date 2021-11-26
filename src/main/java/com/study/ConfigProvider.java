@@ -53,10 +53,11 @@ public class ConfigProvider {
         return password != null ? password : properties.getProperty(PASSWORD);
     }
 
-    public String getDriverClassName(){
+    public String getDriverClassName() {
         var driver = System.getenv("DB_DRIVER");
         return driver != null ? driver : properties.getProperty(DRIVER);
     }
+
     public Properties getProperties() {
         return properties;
     }

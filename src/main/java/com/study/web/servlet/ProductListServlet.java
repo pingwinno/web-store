@@ -16,6 +16,7 @@ import static com.study.model.enums.ContextInstance.TEMPLATE_PROVIDER;
 @Slf4j
 public class ProductListServlet extends HttpServlet {
 
+    private final static String LIST_TEMPLATE = "%s-list.ftl";
     private ProductService productService;
     private TemplateProvider templateProvider;
 
@@ -34,7 +35,8 @@ public class ProductListServlet extends HttpServlet {
             resp.setContentType("text/html;charset=utf-8");
             resp.setStatus(HttpServletResponse.SC_OK);
             var params = Map.of("products", productService.getAll());
-            var data = templateProvider.writePage(params, "list.ftl");
+            var templateName = String.format(LIST_TEMPLATE, req.getAttribute("prefix"));
+            var data = templateProvider.writePage(params, templateName);
             resp.getOutputStream()
                 .write(data);
         } catch (Throwable e) {

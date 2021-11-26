@@ -15,7 +15,7 @@ public class TokenStorage {
     }
 
     public synchronized Optional<UserToken> getTokenEntity(String token) {
-        return Optional.ofNullable(tokenMap.get(token));
+        return Optional.ofNullable(token != null ? tokenMap.get(token) : null);
     }
 
     public synchronized void removeCookie(String token) {

@@ -61,7 +61,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public void updatePassword(User user) {
         try (var connection = dataSource.getConnection();
-             var preparedStatement = connection.prepareStatement(INSERT);) {
+             var preparedStatement = connection.prepareStatement(INSERT)) {
             preparedStatement.setString(1, user.getPassword());
             preparedStatement.executeUpdate();
         }

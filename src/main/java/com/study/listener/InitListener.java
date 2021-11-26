@@ -45,6 +45,9 @@ public class InitListener implements ServletContextListener {
         servletContextEvent.getServletContext().setAttribute(
                 SECURITY_SERVICE.getName(),
                 securityService);
+        servletContextEvent.getServletContext().setAttribute(
+                TOKEN_STORAGE.getName(),
+                tokenStorage);
 
     }
 
