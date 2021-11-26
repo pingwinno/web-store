@@ -8,15 +8,5 @@ services:
     environment:
       POSTGRES_PASSWORD: example
       POSTGRES_DB: store
-
-  store:
-    build:
-      context: .
-    restart: always
-    environment:
-      PORT: 8080
-      DB_URL: jdbc:postgresql://db/store
-      DB_USER: postgres
-      DB_PASSWORD: example
     ports:
-      - 8080:8080
+      - 5432:5432

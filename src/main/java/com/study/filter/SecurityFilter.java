@@ -3,11 +3,11 @@ package com.study.filter;
 import com.study.exception.AuthenticationException;
 import com.study.exception.AuthorizationException;
 import com.study.service.SecurityService;
-import jakarta.servlet.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -16,15 +16,12 @@ public class SecurityFilter implements Filter {
 
     private static final String LOGIN_PATH = "/login";
 
-    private final SecurityService service;
-
-    public SecurityFilter(SecurityService service) {
-        this.service = service;
-    }
+    private SecurityService service;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        Filter.super.init(filterConfig);
+        service = (SecurityService) filterConfig.getServletContext().getAttribute(
+                service.getClass().getCanonicalName());
     }
 
     @Override
@@ -56,6 +53,6 @@ public class SecurityFilter implements Filter {
 
     @Override
     public void destroy() {
-        Filter.super.destroy();
+
     }
 }

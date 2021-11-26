@@ -3,20 +3,27 @@ package com.study.web.servlet;
 import com.study.model.Product;
 import com.study.service.ProductService;
 import com.study.web.template.TemplateProvider;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import static com.study.model.enums.ContextInstance.PRODUCT_SERVICE;
+import static com.study.model.enums.ContextInstance.TEMPLATE_PROVIDER;
 
 @Slf4j
 public class ProductAddServlet extends HttpServlet {
-    private final ProductService productService;
-    private final TemplateProvider templateProvider;
+    private ProductService productService;
+    private TemplateProvider templateProvider;
 
-    public ProductAddServlet(ProductService productService, TemplateProvider templateProvider) {
-        this.productService = productService;
-        this.templateProvider = templateProvider;
+    @Override
+    public void init() {
+        productService = (ProductService) getServletContext().getAttribute(
+                PRODUCT_SERVICE.getName());
+        templateProvider = (TemplateProvider) getServletContext().getAttribute(
+                TEMPLATE_PROVIDER.getName());
     }
 
     @Override
@@ -43,7 +50,7 @@ public class ProductAddServlet extends HttpServlet {
                                  .description("description")
                                  .price(Double.parseDouble(req.getParameter("price")))
                                  .build();
-            productService.update(product);
+            productService.create(product);
             resp.sendRedirect("/");
         } catch (Throwable e) {
             ServletException se = new ServletException(e.getMessage(), e);

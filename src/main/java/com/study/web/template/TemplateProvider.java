@@ -7,7 +7,7 @@ import lombok.SneakyThrows;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
-import java.util.Map;
+import java.util.Collections;
 
 public class TemplateProvider {
     private final Configuration cfg = new Configuration(Configuration.VERSION_2_3_29);
@@ -23,20 +23,16 @@ public class TemplateProvider {
     }
 
     @SneakyThrows
-    public byte[] writePage(Map map, String templateName) {
+    public byte[] writePage(Object params, String templateName) {
         var outputStream = new ByteArrayOutputStream();
         var writer = new OutputStreamWriter(outputStream);
         Template temp = cfg.getTemplate(templateName);
-        temp.process(map, writer);
+        temp.process(params, writer);
         return outputStream.toByteArray();
     }
 
     @SneakyThrows
     public byte[] writePage(String templateName) {
-        var outputStream = new ByteArrayOutputStream();
-        var writer = new OutputStreamWriter(outputStream);
-        Template temp = cfg.getTemplate(templateName);
-        temp.process(Map.of(), writer);
-        return outputStream.toByteArray();
+        return writePage(Collections.emptyMap(), templateName);
     }
 }

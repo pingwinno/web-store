@@ -24,8 +24,8 @@
     <tr>
         <th scope="col">#</th>
         <th scope="col">Product Name</th>
-        <th scope="col">Product Price</th>
         <th scope="col">Description</th>
+        <th scope="col">Product Price</th>
         <th scope="col">Creation Date</th>
         <th scope="col">Actions</th>
     </tr>

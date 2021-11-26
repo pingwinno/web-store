@@ -13,9 +13,9 @@ public interface ProductRepository {
 
     List<Product> search(String query);
 
-    Product save(Product product);
+    void save(Product product);
 
-    Product update(Product product);
+    void update(Product product);
 
     void delete(long id);
 }

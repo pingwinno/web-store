@@ -8,9 +8,9 @@ public interface UserRepository {
 
     Optional<User> findByName(String name);
 
-    User save(User product);
+    void save(User user);
 
-    User updatePassword(User product);
+    void updatePassword(User user);
 
     void delete(long id);
 }

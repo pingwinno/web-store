@@ -33,7 +33,7 @@ public class JpaProductRepositoryTest {
 
     @Test
     void should_returnOneRecord_when_saveOneRecordAndFindById() {
-        product = productRepository.save(product);
+        productRepository.save(product);
         assertFalse(productRepository.findAll()
                                      .isEmpty());
         assertEquals(product, productRepository.findById(product.getId())
@@ -61,7 +61,7 @@ public class JpaProductRepositoryTest {
 
     @Test
     void should_returnEmptyList_when_saveOneRecordAndDeleteById() {
-        product = productRepository.save(product);
+        productRepository.save(product);
         assertFalse(productRepository.findAll()
                                      .isEmpty());
         assertEquals(product, productRepository.findById(product.getId())
@@ -73,7 +73,7 @@ public class JpaProductRepositoryTest {
 
     @Test
     void should_returnProduct_when_saveOneRecordAndSearch() {
-        product = productRepository.save(product);
+        productRepository.save(product);
         assertFalse(productRepository.findAll()
                                      .isEmpty());
         assertTrue(productRepository.search("awesome").contains(product));
@@ -81,7 +81,7 @@ public class JpaProductRepositoryTest {
 
     @Test
     void should_returnProduct_when_saveOneRecordAndSearchFromStartOfDescription() {
-        product = productRepository.save(product);
+        productRepository.save(product);
         assertFalse(productRepository.findAll()
                                      .isEmpty());
         assertTrue(productRepository.search("this").contains(product));
@@ -90,7 +90,7 @@ public class JpaProductRepositoryTest {
 
     @Test
     void should_returnEmptyList_when_saveOneRecordAndSearch() {
-        product = productRepository.save(product);
+        productRepository.save(product);
         assertFalse(productRepository.findAll()
                                      .isEmpty());
         assertFalse(productRepository.search("bad").contains(product));

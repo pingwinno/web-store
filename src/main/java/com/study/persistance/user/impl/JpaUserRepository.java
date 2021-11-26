@@ -24,7 +24,7 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
-    public User save(User product) {
+    public void save(User product) {
         var session = sessionFactory.openSession();
         var transaction = session.getTransaction();
         try (session) {
@@ -36,11 +36,10 @@ public class JpaUserRepository implements UserRepository {
             transaction.rollback();
             throw new RuntimeException(e);
         }
-        return product;
     }
 
     @Override
-    public User updatePassword(User user) {
+    public void updatePassword(User user) {
         var session = sessionFactory.openSession();
         var transaction = session.getTransaction();
         try (session) {
@@ -55,7 +54,6 @@ public class JpaUserRepository implements UserRepository {
             transaction.rollback();
             throw new RuntimeException(e);
         }
-        return user;
     }
 
     @Override

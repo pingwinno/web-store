@@ -1,19 +1,25 @@
 package com.study.web.servlet;
 
+import com.study.model.enums.ContextInstance;
 import com.study.service.ProductService;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import static com.study.model.enums.ContextInstance.*;
 
 @Slf4j
 public class ProductDeleteServlet extends HttpServlet {
 
-    private final ProductService productService;
+    private ProductService productService;
 
-    public ProductDeleteServlet(ProductService productService) {
-        this.productService = productService;
+    @Override
+    public void init() {
+        productService = (ProductService) getServletContext().getAttribute(
+                PRODUCT_SERVICE.getName());
     }
 
     @Override

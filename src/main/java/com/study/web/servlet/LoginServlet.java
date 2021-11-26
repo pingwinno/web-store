@@ -3,22 +3,31 @@ package com.study.web.servlet;
 import com.study.exception.HttpException;
 import com.study.service.SecurityService;
 import com.study.web.template.TemplateProvider;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import static com.study.model.enums.ContextInstance.SECURITY_SERVICE;
+import static com.study.model.enums.ContextInstance.TEMPLATE_PROVIDER;
 
 @Slf4j
 public class LoginServlet extends HttpServlet {
 
-    private final SecurityService securityService;
-    private final TemplateProvider templateProvider;
+    private final static String COOKIE_NAME = "user-token";
+    private SecurityService securityService;
+    private TemplateProvider templateProvider;
 
-    public LoginServlet(SecurityService productService, TemplateProvider templateProvider) {
-        this.securityService = productService;
-        this.templateProvider = templateProvider;
+    @Override
+    public void init() {
+        securityService = (SecurityService) getServletContext().getAttribute(
+                SECURITY_SERVICE.getName());
+        templateProvider = (TemplateProvider) getServletContext().getAttribute(
+                TEMPLATE_PROVIDER.getName());
     }
 
     @SneakyThrows
@@ -43,7 +52,9 @@ public class LoginServlet extends HttpServlet {
         try {
             var userName = req.getParameter("userName");
             var password = req.getParameter("password");
-            resp.addCookie(securityService.login(userName, password));
+            var userToken = securityService.login(userName, password);
+            var cookie = new Cookie(COOKIE_NAME, userToken.getToken());
+            resp.addCookie(cookie);
             resp.sendRedirect("/");
         } catch (HttpException e) {
             resp.setStatus(e.getResponseCode());

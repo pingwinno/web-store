@@ -52,10 +52,10 @@ public class JpaProductRepository implements ProductRepository {
     }
 
     @Override
-    public Product save(Product product) {
+    public void save(Product product) {
         var session = sessionFactory.openSession();
         var transaction = session.getTransaction();
-        try (session) {
+        try {
             transaction.begin();
             session.persist(product);
             transaction.commit();
@@ -64,11 +64,10 @@ public class JpaProductRepository implements ProductRepository {
             transaction.rollback();
             throw new RuntimeException(e);
         }
-        return product;
     }
 
     @Override
-    public Product update(Product product) {
+    public void update(Product product) {
         var session = sessionFactory.openSession();
         var transaction = session.getTransaction();
         try (session) {
@@ -83,7 +82,6 @@ public class JpaProductRepository implements ProductRepository {
             transaction.rollback();
             throw new RuntimeException(e);
         }
-        return product;
     }
 
     @Override

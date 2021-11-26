@@ -18,7 +18,7 @@ import java.time.LocalDate;
 })
 public class Product {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pk_sequence")
     @Column(name = "ID")
     private Long id;
     @Column(name = "NAME")
