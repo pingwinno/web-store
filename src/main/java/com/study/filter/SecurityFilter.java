@@ -2,6 +2,7 @@ package com.study.filter;
 
 import com.study.exception.AuthenticationException;
 import com.study.exception.AuthorizationException;
+import com.study.model.enums.ContextInstance;
 import com.study.service.SecurityService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,9 +20,9 @@ public class SecurityFilter implements Filter {
     private SecurityService service;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         service = (SecurityService) filterConfig.getServletContext().getAttribute(
-                service.getClass().getCanonicalName());
+                ContextInstance.SECURITY_SERVICE.getName());
     }
 
     @Override
