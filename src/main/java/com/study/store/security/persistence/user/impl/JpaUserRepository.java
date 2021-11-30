@@ -1,7 +1,7 @@
-package com.study.store.persistance.user.impl;
+package com.study.store.security.persistence.user.impl;
 
 import com.study.store.security.model.User;
-import com.study.store.persistance.user.UserRepository;
+import com.study.store.security.persistence.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 

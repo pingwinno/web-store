@@ -31,12 +31,13 @@ public class JpaProductRepository implements ProductRepository {
             var criteriaBuilder = session.getCriteriaBuilder();
             var criteriaQuery = criteriaBuilder.createQuery(Product.class);
             var root = criteriaQuery.from(Product.class);
-            criteriaQuery.select(root).where(
-                    criteriaBuilder.or(
-                            criteriaBuilder.like(criteriaBuilder.upper(root.get("name")),
-                                    wordForSearch.toUpperCase()),
-                            criteriaBuilder.like(criteriaBuilder.upper(root.get("description")),
-                                    "%" + wordForSearch.toUpperCase() + "%")));
+            criteriaQuery.select(root)
+                         .where(
+                                 criteriaBuilder.or(
+                                         criteriaBuilder.like(criteriaBuilder.upper(root.get("name")),
+                                                 wordForSearch.toUpperCase()),
+                                         criteriaBuilder.like(criteriaBuilder.upper(root.get("description")),
+                                                 "%" + wordForSearch.toUpperCase() + "%")));
             var query = session.createQuery(criteriaQuery);
             return query.getResultList();
         }
@@ -47,7 +48,8 @@ public class JpaProductRepository implements ProductRepository {
         try (var session = sessionFactory.openSession()) {
             var query = session.createNamedQuery("product.findById", Product.class);
             query.setParameter("id", id);
-            return query.getResultStream().findFirst();
+            return query.getResultStream()
+                        .findFirst();
         }
     }
 

@@ -1,8 +1,9 @@
-package com.study.store.persistance.user.impl;
+package com.study.store.security.persistence.user.impl;
 
-import com.study.store.persistance.user.UserRepository;
-import com.study.store.security.model.User;
+import com.study.ioc.DependencyContainer;
 import com.study.store.model.enums.Role;
+import com.study.store.security.model.User;
+import com.study.store.security.persistence.user.UserRepository;
 import lombok.SneakyThrows;
 
 import javax.sql.DataSource;
@@ -14,11 +15,7 @@ public class JdbcUserRepository implements UserRepository {
     private final static String INSERT = "INSERT INTO USERS (NAME, PASSWORD, SALT, ROLE) Values (? ,? ,? ,?)";
     private final static String UPDATE = "UPDATE USERS SET NAME = ?,PASSWORD =?, SALT=? WHERE ROLE = ?";
     private final static String DELETE = "DELETE FROM USERS WHERE NAME = ?";
-    private final DataSource dataSource;
-
-    public JdbcUserRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+    private final DataSource dataSource = DependencyContainer.getDependency(DataSource.class);
 
 
     @SneakyThrows
@@ -39,7 +36,8 @@ public class JdbcUserRepository implements UserRepository {
                 users.add(product);
             }
             resultSet.close();
-            return users.stream().findFirst();
+            return users.stream()
+                        .findFirst();
         }
     }
 
@@ -52,7 +50,8 @@ public class JdbcUserRepository implements UserRepository {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setString(2, product.getPassword());
             preparedStatement.setString(3, product.getSalt());
-            preparedStatement.setInt(4, product.getRole().ordinal());
+            preparedStatement.setInt(4, product.getRole()
+                                               .ordinal());
             preparedStatement.executeUpdate();
         }
     }

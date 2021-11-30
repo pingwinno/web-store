@@ -1,11 +1,16 @@
 package com.study.store.filter;
 
-import com.study.store.model.enums.ContextInstance;
+import com.study.ioc.DependencyContainer;
 import com.study.store.model.enums.Role;
 import com.study.store.security.TokenStorage;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -15,12 +20,12 @@ import java.util.Arrays;
 public class TemplateFilter implements Filter {
 
     private final static String COOKIE_NAME = "user-token";
-    private TokenStorage tokenStorage;
+    private final TokenStorage tokenStorage = DependencyContainer.getDependency(TokenStorage.class);
+
 
     @Override
-    public void init(FilterConfig filterConfig) {
-        tokenStorage = (TokenStorage) filterConfig.getServletContext().getAttribute(
-                ContextInstance.TOKEN_STORAGE.getName());
+    public void init(FilterConfig filterConfig) throws ServletException {
+
     }
 
     @Override
@@ -31,13 +36,15 @@ public class TemplateFilter implements Filter {
 
         var token = cookies != null
                 ? Arrays.stream(cookies)
-                        .filter(cookie -> cookie.getName().equals(COOKIE_NAME))
+                        .filter(cookie -> cookie.getName()
+                                                .equals(COOKIE_NAME))
                         .map(Cookie::getValue)
                         .findFirst()
                         .orElse(null)
                 : null;
         var templatePrefix = tokenStorage.getTokenEntity(token)
-                                         .map(userToken -> userToken.getUser().getRole())
+                                         .map(userToken -> userToken.getUser()
+                                                                    .getRole())
                                          .orElse(Role.GUEST)
                                          .getName();
         servletRequest.setAttribute("prefix", templatePrefix);

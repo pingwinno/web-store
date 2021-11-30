@@ -2,13 +2,14 @@ package com.study.store.security;
 
 import com.study.store.security.model.UserToken;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-
+@Slf4j
 public class TokenStorage {
 
     private final static int CYCLE_DELAY = 60000;
@@ -39,13 +40,15 @@ public class TokenStorage {
         while (true) {
             var expiredTokens = tokenMap.values()
                                         .stream()
-                                        .filter(userToken -> userToken.getExpirationTime() < Instant.now().getEpochSecond())
+                                        .filter(userToken -> userToken.getExpirationTime() < Instant.now()
+                                                                                                    .getEpochSecond())
                                         .map(UserToken::getToken)
                                         .collect(Collectors.toList());
             for (String expiredToken : expiredTokens) {
                 tokenMap.remove(expiredToken);
             }
-            Thread.currentThread().wait(CYCLE_DELAY);
+            log.debug("Token storage cleaned");
+            Thread.sleep(CYCLE_DELAY);
         }
     }
 }

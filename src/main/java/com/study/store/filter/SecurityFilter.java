@@ -1,12 +1,17 @@
 package com.study.store.filter;
 
+import com.study.ioc.DependencyContainer;
 import com.study.store.exception.AuthenticationException;
 import com.study.store.exception.AuthorizationException;
-import com.study.store.model.enums.ContextInstance;
 import com.study.store.security.SecurityService;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,12 +23,10 @@ public class SecurityFilter implements Filter {
 
     private static final String LOGIN_PATH = "/login";
     private final static String COOKIE_NAME = "user-token";
-    private SecurityService service;
+    private final SecurityService service = DependencyContainer.getDependency(SecurityService.class);
 
     @Override
     public void init(FilterConfig filterConfig) {
-        service = (SecurityService) filterConfig.getServletContext().getAttribute(
-                ContextInstance.SECURITY_SERVICE.getName());
     }
 
     @Override
@@ -36,7 +39,8 @@ public class SecurityFilter implements Filter {
 
         var token = cookies != null
                 ? Arrays.stream(cookies)
-                        .filter(cookie -> cookie.getName().equals(COOKIE_NAME))
+                        .filter(cookie -> cookie.getName()
+                                                .equals(COOKIE_NAME))
                         .map(Cookie::getValue)
                         .findFirst()
                         .orElse(null)

@@ -1,4 +1,4 @@
-package com.study.store.persistance.user;
+package com.study.store.security.persistence.user;
 
 import com.study.store.security.model.User;
 

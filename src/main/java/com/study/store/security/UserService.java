@@ -1,18 +1,14 @@
 package com.study.store.security;
 
-import com.study.store.persistance.user.UserRepository;
+import com.study.ioc.DependencyContainer;
 import com.study.store.security.model.User;
+import com.study.store.security.persistence.user.UserRepository;
 
 import java.util.Optional;
 
 public class UserService {
 
-    private final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
+    private final UserRepository userRepository = DependencyContainer.getDependency(UserRepository.class);
 
     public Optional<User> getByName(String user) {
         return userRepository.findByName(user);

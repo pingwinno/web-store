@@ -1,5 +1,6 @@
 package com.study.store.web.servlet;
 
+import com.study.ioc.DependencyContainer;
 import com.study.store.exception.HttpException;
 import com.study.store.service.BasketService;
 import com.study.store.web.template.TemplateProvider;
@@ -13,23 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.study.store.model.enums.ContextInstance.BASKET_SERVICE;
-import static com.study.store.model.enums.ContextInstance.TEMPLATE_PROVIDER;
-
 @Slf4j
 public class BasketServlet extends HttpServlet {
 
     private static final String BASKET = "basket";
-    private TemplateProvider templateProvider;
-    private BasketService basketService;
+    private final TemplateProvider templateProvider = DependencyContainer.getDependency(TemplateProvider.class);
+    private final BasketService basketService = DependencyContainer.getDependency(BasketService.class);
 
-    @Override
-    public void init() {
-        templateProvider = (TemplateProvider) getServletContext().getAttribute(
-                TEMPLATE_PROVIDER.getName());
-        basketService = (BasketService) getServletContext().getAttribute(
-                BASKET_SERVICE.getName());
-    }
 
     @SneakyThrows
     @Override
@@ -37,7 +28,8 @@ public class BasketServlet extends HttpServlet {
         try {
             resp.setContentType("text/html;charset=utf-8");
             resp.setStatus(HttpServletResponse.SC_OK);
-            var basket = (List<Long>) req.getSession().getAttribute(BASKET);
+            var basket = (List<Long>) req.getSession()
+                                         .getAttribute(BASKET);
             var params = basket != null
                     ? Map.of("products", basketService.getBasketProducts(basket))
                     : Map.of("products", List.of());

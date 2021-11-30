@@ -1,5 +1,6 @@
 package com.study.store.web.servlet;
 
+import com.study.ioc.DependencyContainer;
 import com.study.store.security.SecurityService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -8,18 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.study.store.model.enums.ContextInstance.SECURITY_SERVICE;
-
 @Slf4j
 public class LogoutServlet extends HttpServlet {
 
-    private SecurityService securityService;
+    private final SecurityService securityService = DependencyContainer.getDependency(SecurityService.class);
 
-    @Override
-    public void init() {
-        securityService = (SecurityService) getServletContext().getAttribute(
-                SECURITY_SERVICE.getName());
-    }
 
     @SneakyThrows
     @Override

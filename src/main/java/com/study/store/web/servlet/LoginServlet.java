@@ -1,5 +1,6 @@
 package com.study.store.web.servlet;
 
+import com.study.ioc.DependencyContainer;
 import com.study.store.exception.HttpException;
 import com.study.store.security.SecurityService;
 import com.study.store.web.template.TemplateProvider;
@@ -11,23 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.study.store.model.enums.ContextInstance.SECURITY_SERVICE;
-import static com.study.store.model.enums.ContextInstance.TEMPLATE_PROVIDER;
-
 @Slf4j
 public class LoginServlet extends HttpServlet {
 
     private final static String COOKIE_NAME = "user-token";
-    private SecurityService securityService;
-    private TemplateProvider templateProvider;
+    private final SecurityService securityService = DependencyContainer.getDependency(SecurityService.class);
+    private final TemplateProvider templateProvider = DependencyContainer.getDependency(TemplateProvider.class);
 
-    @Override
-    public void init() {
-        securityService = (SecurityService) getServletContext().getAttribute(
-                SECURITY_SERVICE.getName());
-        templateProvider = (TemplateProvider) getServletContext().getAttribute(
-                TEMPLATE_PROVIDER.getName());
-    }
 
     @SneakyThrows
     @Override

@@ -1,5 +1,6 @@
 package com.study.store.security;
 
+import com.study.ioc.DependencyContainer;
 import com.study.store.exception.AuthenticationException;
 import com.study.store.exception.AuthorizationException;
 import com.study.store.model.enums.Role;
@@ -29,29 +30,28 @@ public class SecurityService {
             Map.of(Role.ADMIN, List.of(ROOT, SEARCH, EDIT, ADD, LOGIN, LOGOUT),
                     Role.USER, List.of(ROOT, SEARCH, LOGIN, LOGOUT, BASKET),
                     Role.GUEST, List.of(ROOT, SEARCH, LOGIN));
-    private final UserService userService;
-    private final TokenStorage tokenStorage;
+    private final UserService userService = DependencyContainer.getDependency(UserService.class);
+    private final TokenStorage tokenStorage = DependencyContainer.getDependency(TokenStorage.class);
 
-    public SecurityService(UserService userService, TokenStorage tokenStorage) {
-        this.userService = userService;
-        this.tokenStorage = tokenStorage;
-    }
 
     public void validateToken(String token, String path) {
         var tokenEntity = tokenStorage.getTokenEntity(token);
         var role = Role.GUEST;
-        if (tokenEntity.isPresent() && tokenEntity.get().getExpirationTime() > Instant.now().getEpochSecond()) {
-            role = tokenEntity.get().getUser().getRole();
-            log.info("user {} is {} ", tokenEntity.get().getUser().getName(), role);
+        if (tokenEntity.isPresent() && tokenEntity.get()
+                                                  .getExpirationTime() > Instant.now()
+                                                                                .getEpochSecond()) {
+            role = tokenEntity.get()
+                              .getUser()
+                              .getRole();
         }
         validatePath(role, path);
     }
 
     private void validatePath(Role role, String path) {
-        log.info("Role {} path {}", role, path);
         allowedPaths.get(role)
                     .stream()
-                    .filter(allowedPath -> allowedPath.matcher(path).matches())
+                    .filter(allowedPath -> allowedPath.matcher(path)
+                                                      .matches())
                     .findFirst()
                     .orElseThrow(AuthorizationException::new);
     }
@@ -71,10 +71,12 @@ public class SecurityService {
     }
 
     private UserToken generateCookie(User user) {
-        var token = UUID.randomUUID().toString();
+        var token = UUID.randomUUID()
+                        .toString();
         var tokenEntity = UserToken.builder()
                                    .token(token)
-                                   .expirationTime(Instant.now().getEpochSecond() + DEFAULT_LIFETIME)
+                                   .expirationTime(Instant.now()
+                                                          .getEpochSecond() + DEFAULT_LIFETIME)
                                    .user(user)
                                    .build();
         tokenStorage.saveToken(tokenEntity);

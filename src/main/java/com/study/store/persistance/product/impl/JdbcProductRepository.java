@@ -1,7 +1,8 @@
 package com.study.store.persistance.product.impl;
 
-import com.study.store.persistance.product.ProductRepository;
+import com.study.ioc.DependencyContainer;
 import com.study.store.model.Product;
+import com.study.store.persistance.product.ProductRepository;
 import lombok.SneakyThrows;
 
 import javax.sql.DataSource;
@@ -18,11 +19,7 @@ public class JdbcProductRepository implements ProductRepository {
     private final static String INSERT = "INSERT INTO PRODUCT (NAME, DESCRIPTION, PRICE, CREATION_DATE) Values (? ,? ,? ,?)";
     private final static String UPDATE = "UPDATE PRODUCT SET NAME = ?,DESCRIPTION =?, PRICE=? WHERE ID = ?";
     private final static String DELETE = "DELETE FROM PRODUCT WHERE ID = ?";
-    private final DataSource dataSource;
-
-    public JdbcProductRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+    private final DataSource dataSource = DependencyContainer.getDependency(DataSource.class);
 
     @SneakyThrows
     @Override
@@ -38,7 +35,8 @@ public class JdbcProductRepository implements ProductRepository {
                                      .name(resultSet.getString("NAME"))
                                      .description(resultSet.getString("DESCRIPTION"))
                                      .price(resultSet.getDouble("PRICE"))
-                                     .creationDate(resultSet.getDate("CREATION_DATE").toLocalDate())
+                                     .creationDate(resultSet.getDate("CREATION_DATE")
+                                                            .toLocalDate())
                                      .build();
                 products.add(product);
             }
@@ -61,12 +59,14 @@ public class JdbcProductRepository implements ProductRepository {
                                      .name(resultSet.getString("NAME"))
                                      .description(resultSet.getString("DESCRIPTION"))
                                      .price(resultSet.getDouble("PRICE"))
-                                     .creationDate(resultSet.getDate("CREATION_DATE").toLocalDate())
+                                     .creationDate(resultSet.getDate("CREATION_DATE")
+                                                            .toLocalDate())
                                      .build();
                 products.add(product);
             }
             resultSet.close();
-            return products.stream().findFirst();
+            return products.stream()
+                           .findFirst();
         }
     }
 
@@ -85,7 +85,8 @@ public class JdbcProductRepository implements ProductRepository {
                                      .name(resultSet.getString("NAME"))
                                      .description(resultSet.getString("DESCRIPTION"))
                                      .price(resultSet.getDouble("PRICE"))
-                                     .creationDate(resultSet.getDate("CREATION_DATE").toLocalDate())
+                                     .creationDate(resultSet.getDate("CREATION_DATE")
+                                                            .toLocalDate())
                                      .build();
                 products.add(product);
             }

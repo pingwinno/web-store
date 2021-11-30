@@ -1,5 +1,6 @@
 package com.study.store.web.servlet;
 
+import com.study.ioc.DependencyContainer;
 import com.study.store.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -7,18 +8,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.study.store.model.enums.ContextInstance.PRODUCT_SERVICE;
-
 @Slf4j
 public class ProductDeleteServlet extends HttpServlet {
 
-    private ProductService productService;
+    private final ProductService productService = DependencyContainer.getDependency(ProductService.class);
 
-    @Override
-    public void init() {
-        productService = (ProductService) getServletContext().getAttribute(
-                PRODUCT_SERVICE.getName());
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
