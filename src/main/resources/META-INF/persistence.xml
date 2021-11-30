@@ -5,8 +5,8 @@
 
     <persistence-unit name="store-persistence">
 
-        <class>com.study.model.Product</class>
-        <class>com.study.security.model.User</class>
+        <class>com.study.store.model.Product</class>
+        <class>com.study.store.security.model.User</class>
     </persistence-unit>
 
 </persistence>

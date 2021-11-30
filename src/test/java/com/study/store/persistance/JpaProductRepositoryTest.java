@@ -1,0 +1,99 @@
+package com.study.store.persistance;
+
+import com.study.store.model.Product;
+import com.study.store.persistance.product.ProductRepository;
+import com.study.store.persistance.product.impl.JpaProductRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class JpaProductRepositoryTest {
+    private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("test-store-persistence");
+    private final ProductRepository productRepository = new JpaProductRepository(entityManagerFactory);
+    private final Product product = Product.builder()
+                                           .name("book")
+                                           .description("This book is awesome.")
+                                           .price(9.99)
+                                           .build();
+
+    @AfterEach
+    void close() {
+        entityManagerFactory.close();
+    }
+
+    @Test
+    void should_returnEmptyList_when_callFindAllOnEmptyDb() {
+        assertTrue(productRepository.findAll()
+                                    .isEmpty());
+    }
+
+    @Test
+    void should_returnOneRecord_when_saveOneRecordAndFindById() {
+        productRepository.save(product);
+        assertFalse(productRepository.findAll()
+                                     .isEmpty());
+        Assertions.assertEquals(product, productRepository.findById(product.getId())
+                                                          .orElse(null));
+    }
+
+    @Test
+    void should_returnUpdatedRecord_when_saveAndUpdateOneRecordAndFindById() {
+        var expectedId = 1L;
+        productRepository.save(product);
+        assertFalse(productRepository.findAll()
+                                     .isEmpty());
+        var savedProduct = productRepository.findById(expectedId)
+                                            .orElse(null);
+        assertNotNull(savedProduct);
+        Assertions.assertEquals(product.getName(), savedProduct.getName());
+        Assertions.assertEquals(product.getPrice(), savedProduct.getPrice());
+        savedProduct.setPrice(20.99);
+        productRepository.update(savedProduct);
+        var updatedProduct = productRepository.findById(expectedId)
+                                              .orElse(null);
+        assertNotNull(updatedProduct);
+        Assertions.assertEquals(savedProduct.getPrice(), updatedProduct.getPrice());
+    }
+
+    @Test
+    void should_returnEmptyList_when_saveOneRecordAndDeleteById() {
+        productRepository.save(product);
+        assertFalse(productRepository.findAll()
+                                     .isEmpty());
+        Assertions.assertEquals(product, productRepository.findById(product.getId())
+                                                          .orElse(null));
+        productRepository.delete(product.getId());
+        assertTrue(productRepository.findAll()
+                                    .isEmpty());
+    }
+
+    @Test
+    void should_returnProduct_when_saveOneRecordAndSearch() {
+        productRepository.save(product);
+        assertFalse(productRepository.findAll()
+                                     .isEmpty());
+        assertTrue(productRepository.search("awesome").contains(product));
+    }
+
+    @Test
+    void should_returnProduct_when_saveOneRecordAndSearchFromStartOfDescription() {
+        productRepository.save(product);
+        assertFalse(productRepository.findAll()
+                                     .isEmpty());
+        assertTrue(productRepository.search("this").contains(product));
+    }
+
+
+    @Test
+    void should_returnEmptyList_when_saveOneRecordAndSearch() {
+        productRepository.save(product);
+        assertFalse(productRepository.findAll()
+                                     .isEmpty());
+        assertFalse(productRepository.search("bad").contains(product));
+    }
+}

@@ -6,12 +6,12 @@
          version="4.0">
 
     <listener>
-        <listener-class>com.study.listener.InitListener</listener-class>
+        <listener-class>com.study.store.listener.InitListener</listener-class>
     </listener>
 
     <filter>
         <filter-name>SecurityFilter</filter-name>
-        <filter-class>com.study.filter.SecurityFilter</filter-class>
+        <filter-class>com.study.store.filter.SecurityFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -21,7 +21,7 @@
 
     <filter>
         <filter-name>TemplateFilter</filter-name>
-        <filter-class>com.study.filter.TemplateFilter</filter-class>
+        <filter-class>com.study.store.filter.TemplateFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -36,7 +36,7 @@
 
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.study.web.servlet.LoginServlet</servlet-class>
+        <servlet-class>com.study.store.web.servlet.LoginServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -46,7 +46,7 @@
 
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>com.study.web.servlet.LogoutServlet</servlet-class>
+        <servlet-class>com.study.store.web.servlet.LogoutServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -56,7 +56,7 @@
 
     <servlet>
         <servlet-name>ProductAddServlet</servlet-name>
-        <servlet-class>com.study.web.servlet.ProductAddServlet</servlet-class>
+        <servlet-class>com.study.store.web.servlet.ProductAddServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -66,7 +66,7 @@
 
     <servlet>
         <servlet-name>ProductEditServlet</servlet-name>
-        <servlet-class>com.study.web.servlet.ProductEditServlet</servlet-class>
+        <servlet-class>com.study.store.web.servlet.ProductEditServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -76,7 +76,7 @@
 
     <servlet>
         <servlet-name>ProductDeleteServlet</servlet-name>
-        <servlet-class>com.study.web.servlet.ProductDeleteServlet</servlet-class>
+        <servlet-class>com.study.store.web.servlet.ProductDeleteServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -86,7 +86,7 @@
 
     <servlet>
         <servlet-name>BasketServlet</servlet-name>
-        <servlet-class>com.study.web.servlet.BasketServlet</servlet-class>
+        <servlet-class>com.study.store.web.servlet.BasketServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -96,7 +96,7 @@
 
     <servlet>
         <servlet-name>ProductSearchServlet</servlet-name>
-        <servlet-class>com.study.web.servlet.ProductSearchServlet</servlet-class>
+        <servlet-class>com.study.store.web.servlet.ProductSearchServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -106,7 +106,7 @@
 
     <servlet>
         <servlet-name>ProductListServlet</servlet-name>
-        <servlet-class>com.study.web.servlet.ProductListServlet</servlet-class>
+        <servlet-class>com.study.store.web.servlet.ProductListServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
