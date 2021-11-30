@@ -16,12 +16,9 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.Persistence;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.sql.DataSource;
-
-import static com.study.store.ConfigProvider.PERSISTENCE;
 
 @Slf4j
 public class InitListener implements ServletContextListener {
@@ -34,7 +31,7 @@ public class InitListener implements ServletContextListener {
         hikariConfig.setUsername(configProvider.getDbUser());
         hikariConfig.setPassword(configProvider.getDbPassword());
         hikariConfig.setJdbcUrl(configProvider.getDbUrl());
-       // var entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE);
+        // var entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE);
         ServiceLocator.addDependency(DataSource.class, new HikariDataSource(hikariConfig));
         ServiceLocator.addDependency(ProductRepository.class, new JdbcProductRepository());
         ServiceLocator.addDependency(UserRepository.class, new JdbcUserRepository());
