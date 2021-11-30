@@ -1,5 +1,6 @@
 package com.study.store.security.persistence.user.impl;
 
+import com.study.di.ServiceLocator;
 import com.study.store.security.model.User;
 import com.study.store.security.persistence.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -9,12 +10,9 @@ import javax.persistence.EntityManagerFactory;
 import java.util.Optional;
 
 @Slf4j
-public class JpaUserRepository implements UserRepository {
-    private final SessionFactory sessionFactory;
-
-    public JpaUserRepository(EntityManagerFactory entityManagerFactory) {
-        this.sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
-    }
+public class HibernateUserRepository implements UserRepository {
+    private final SessionFactory sessionFactory = ServiceLocator.getDependency(EntityManagerFactory.class)
+                                                                .unwrap(SessionFactory.class);
 
     @Override
     public Optional<User> findByName(String name) {
