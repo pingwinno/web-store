@@ -1,6 +1,6 @@
 package com.study.store.filter;
 
-import com.study.ioc.DependencyContainer;
+import com.study.di.ServiceLocator;
 import com.study.store.model.enums.Role;
 import com.study.store.security.TokenStorage;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ import java.util.Arrays;
 public class TemplateFilter implements Filter {
 
     private final static String COOKIE_NAME = "user-token";
-    private final TokenStorage tokenStorage = DependencyContainer.getDependency(TokenStorage.class);
+    private final TokenStorage tokenStorage = ServiceLocator.getDependency(TokenStorage.class);
 
 
     @Override

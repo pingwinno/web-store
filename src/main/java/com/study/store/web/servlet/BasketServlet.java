@@ -1,6 +1,6 @@
 package com.study.store.web.servlet;
 
-import com.study.ioc.DependencyContainer;
+import com.study.di.ServiceLocator;
 import com.study.store.exception.HttpException;
 import com.study.store.service.BasketService;
 import com.study.store.web.template.TemplateProvider;
@@ -18,8 +18,8 @@ import java.util.Map;
 public class BasketServlet extends HttpServlet {
 
     private static final String BASKET = "basket";
-    private final TemplateProvider templateProvider = DependencyContainer.getDependency(TemplateProvider.class);
-    private final BasketService basketService = DependencyContainer.getDependency(BasketService.class);
+    private final TemplateProvider templateProvider = ServiceLocator.getDependency(TemplateProvider.class);
+    private final BasketService basketService = ServiceLocator.getDependency(BasketService.class);
 
 
     @SneakyThrows

@@ -1,6 +1,6 @@
 package com.study.store.web.servlet;
 
-import com.study.ioc.DependencyContainer;
+import com.study.di.ServiceLocator;
 import com.study.store.security.SecurityService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class LogoutServlet extends HttpServlet {
 
-    private final SecurityService securityService = DependencyContainer.getDependency(SecurityService.class);
+    private final SecurityService securityService = ServiceLocator.getDependency(SecurityService.class);
 
 
     @SneakyThrows

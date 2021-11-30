@@ -1,9 +1,9 @@
-package com.study.ioc;
+package com.study.di;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class DependencyContainer {
+public class ServiceLocator {
 
     private static final Map<Class<?>, Object> DEPENDENCIES = new HashMap<>();
 

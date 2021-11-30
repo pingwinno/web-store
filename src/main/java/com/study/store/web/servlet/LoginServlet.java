@@ -1,6 +1,6 @@
 package com.study.store.web.servlet;
 
-import com.study.ioc.DependencyContainer;
+import com.study.di.ServiceLocator;
 import com.study.store.exception.HttpException;
 import com.study.store.security.SecurityService;
 import com.study.store.web.template.TemplateProvider;
@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginServlet extends HttpServlet {
 
     private final static String COOKIE_NAME = "user-token";
-    private final SecurityService securityService = DependencyContainer.getDependency(SecurityService.class);
-    private final TemplateProvider templateProvider = DependencyContainer.getDependency(TemplateProvider.class);
+    private final SecurityService securityService = ServiceLocator.getDependency(SecurityService.class);
+    private final TemplateProvider templateProvider = ServiceLocator.getDependency(TemplateProvider.class);
 
 
     @SneakyThrows

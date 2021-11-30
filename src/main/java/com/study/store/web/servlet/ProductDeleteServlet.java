@@ -1,6 +1,6 @@
 package com.study.store.web.servlet;
 
-import com.study.ioc.DependencyContainer;
+import com.study.di.ServiceLocator;
 import com.study.store.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class ProductDeleteServlet extends HttpServlet {
 
-    private final ProductService productService = DependencyContainer.getDependency(ProductService.class);
+    private final ProductService productService = ServiceLocator.getDependency(ProductService.class);
 
 
     @Override

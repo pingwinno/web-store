@@ -1,6 +1,6 @@
 package com.study.store.security;
 
-import com.study.ioc.DependencyContainer;
+import com.study.di.ServiceLocator;
 import com.study.store.exception.AuthenticationException;
 import com.study.store.exception.AuthorizationException;
 import com.study.store.model.enums.Role;
@@ -30,8 +30,8 @@ public class SecurityService {
             Map.of(Role.ADMIN, List.of(ROOT, SEARCH, EDIT, ADD, LOGIN, LOGOUT),
                     Role.USER, List.of(ROOT, SEARCH, LOGIN, LOGOUT, BASKET),
                     Role.GUEST, List.of(ROOT, SEARCH, LOGIN));
-    private final UserService userService = DependencyContainer.getDependency(UserService.class);
-    private final TokenStorage tokenStorage = DependencyContainer.getDependency(TokenStorage.class);
+    private final UserService userService = ServiceLocator.getDependency(UserService.class);
+    private final TokenStorage tokenStorage = ServiceLocator.getDependency(TokenStorage.class);
 
 
     public void validateToken(String token, String path) {

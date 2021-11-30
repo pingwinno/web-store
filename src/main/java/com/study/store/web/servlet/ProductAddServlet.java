@@ -1,6 +1,6 @@
 package com.study.store.web.servlet;
 
-import com.study.ioc.DependencyContainer;
+import com.study.di.ServiceLocator;
 import com.study.store.model.Product;
 import com.study.store.service.ProductService;
 import com.study.store.web.template.TemplateProvider;
@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 public class ProductAddServlet extends HttpServlet {
-    private final ProductService productService = DependencyContainer.getDependency(ProductService.class);
-    private final TemplateProvider templateProvider = DependencyContainer.getDependency(TemplateProvider.class);
+    private final ProductService productService = ServiceLocator.getDependency(ProductService.class);
+    private final TemplateProvider templateProvider = ServiceLocator.getDependency(TemplateProvider.class);
 
 
     @Override

@@ -1,6 +1,6 @@
 package com.study.store.service;
 
-import com.study.ioc.DependencyContainer;
+import com.study.di.ServiceLocator;
 import com.study.store.exception.NotFoundException;
 import com.study.store.model.Product;
 import com.study.store.persistance.product.ProductRepository;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ProductService {
 
-    private final ProductRepository productRepository = DependencyContainer.getDependency(ProductRepository.class);
+    private final ProductRepository productRepository = ServiceLocator.getDependency(ProductRepository.class);
 
     public List<Product> getAll() {
         return productRepository.findAll();

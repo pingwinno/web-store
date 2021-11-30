@@ -1,6 +1,6 @@
 package com.study.store.filter;
 
-import com.study.ioc.DependencyContainer;
+import com.study.di.ServiceLocator;
 import com.study.store.exception.AuthenticationException;
 import com.study.store.exception.AuthorizationException;
 import com.study.store.security.SecurityService;
@@ -23,7 +23,7 @@ public class SecurityFilter implements Filter {
 
     private static final String LOGIN_PATH = "/login";
     private final static String COOKIE_NAME = "user-token";
-    private final SecurityService service = DependencyContainer.getDependency(SecurityService.class);
+    private final SecurityService service = ServiceLocator.getDependency(SecurityService.class);
 
     @Override
     public void init(FilterConfig filterConfig) {

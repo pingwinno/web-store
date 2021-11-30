@@ -1,6 +1,6 @@
 package com.study.store.listener;
 
-import com.study.ioc.DependencyContainer;
+import com.study.di.ServiceLocator;
 import com.study.store.ConfigProvider;
 import com.study.store.persistance.product.ProductRepository;
 import com.study.store.persistance.product.impl.JdbcProductRepository;
@@ -31,15 +31,15 @@ public class InitListener implements ServletContextListener {
         hikariConfig.setUsername(configProvider.getDbUser());
         hikariConfig.setPassword(configProvider.getDbPassword());
         hikariConfig.setJdbcUrl(configProvider.getDbUrl());
-        DependencyContainer.addDependency(DataSource.class, new HikariDataSource(hikariConfig));
-        DependencyContainer.addDependency(ProductRepository.class, new JdbcProductRepository());
-        DependencyContainer.addDependency(UserRepository.class, new JdbcUserRepository());
-        DependencyContainer.addDependency(ProductService.class, new ProductService());
-        DependencyContainer.addDependency(TemplateProvider.class, new TemplateProvider());
-        DependencyContainer.addDependency(TokenStorage.class, new TokenStorage());
-        DependencyContainer.addDependency(UserService.class, new UserService());
-        DependencyContainer.addDependency(SecurityService.class, new SecurityService());
-        DependencyContainer.addDependency(BasketService.class, new BasketService());
+        ServiceLocator.addDependency(DataSource.class, new HikariDataSource(hikariConfig));
+        ServiceLocator.addDependency(ProductRepository.class, new JdbcProductRepository());
+        ServiceLocator.addDependency(UserRepository.class, new JdbcUserRepository());
+        ServiceLocator.addDependency(ProductService.class, new ProductService());
+        ServiceLocator.addDependency(TemplateProvider.class, new TemplateProvider());
+        ServiceLocator.addDependency(TokenStorage.class, new TokenStorage());
+        ServiceLocator.addDependency(UserService.class, new UserService());
+        ServiceLocator.addDependency(SecurityService.class, new SecurityService());
+        ServiceLocator.addDependency(BasketService.class, new BasketService());
     }
 
     @Override
