@@ -1,9 +1,9 @@
 package com.study.store.persistance;
 
-import com.study.di.ServiceLocator;
 import com.study.store.model.Product;
 import com.study.store.persistance.product.ProductRepository;
 import com.study.store.persistance.product.impl.HibernateProductRepository;
+import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,20 +23,18 @@ public class HibernateProductRepositoryTest {
                                            .description("This book is awesome.")
                                            .price(9.99)
                                            .build();
+    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(
+            "test-store-persistence");
     private ProductRepository productRepository;
 
     @BeforeEach
     void init() {
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(
-                "test-store-persistence");
-        ServiceLocator.addDependency(EntityManagerFactory.class, entityManagerFactory);
-        productRepository = new HibernateProductRepository();
+        productRepository = new HibernateProductRepository(entityManagerFactory.unwrap(SessionFactory.class));
     }
 
     @AfterEach
     void close() {
-        ServiceLocator.getDependency(EntityManagerFactory.class)
-                      .close();
+        entityManagerFactory.close();
     }
 
     @Test

@@ -12,6 +12,13 @@ import java.util.Optional;
 public class HibernateProductRepository implements ProductRepository {
     private SessionFactory sessionFactory;
 
+    public HibernateProductRepository() {
+    }
+
+    public HibernateProductRepository(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     @Override
     public List<Product> findAll() {
         try (var session = sessionFactory.openSession()) {
