@@ -1,18 +1,15 @@
 package com.study.store.security.persistence.user.impl;
 
-import com.study.di.ServiceLocator;
 import com.study.store.security.model.User;
 import com.study.store.security.persistence.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 
-import javax.persistence.EntityManagerFactory;
 import java.util.Optional;
 
 @Slf4j
 public class HibernateUserRepository implements UserRepository {
-    private final SessionFactory sessionFactory = ServiceLocator.getDependency(EntityManagerFactory.class)
-                                                                .unwrap(SessionFactory.class);
+    private SessionFactory sessionFactory;
 
     @Override
     public Optional<User> findByName(String name) {

@@ -1,19 +1,16 @@
 package com.study.store.persistance.product.impl;
 
-import com.study.di.ServiceLocator;
 import com.study.store.model.Product;
 import com.study.store.persistance.product.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 
-import javax.persistence.EntityManagerFactory;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 public class HibernateProductRepository implements ProductRepository {
-    private final SessionFactory sessionFactory = ServiceLocator.getDependency(EntityManagerFactory.class)
-                                                                .unwrap(SessionFactory.class);
+    private SessionFactory sessionFactory;
 
     @Override
     public List<Product> findAll() {

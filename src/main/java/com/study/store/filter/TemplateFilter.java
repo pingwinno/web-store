@@ -1,6 +1,8 @@
 package com.study.store.filter;
 
-import com.study.di.ServiceLocator;
+
+import com.study.ApplicationContext;
+import com.study.store.listener.InitListener;
 import com.study.store.model.enums.Role;
 import com.study.store.security.TokenStorage;
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +22,15 @@ import java.util.Arrays;
 public class TemplateFilter implements Filter {
 
     private final static String COOKIE_NAME = "user-token";
-    private final TokenStorage tokenStorage = ServiceLocator.getDependency(TokenStorage.class);
+    private TokenStorage tokenStorage;
 
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        ApplicationContext applicationContext = (ApplicationContext) filterConfig.getServletContext()
+                                                                                 .getAttribute(
+                                                                                         InitListener.APPLICATION_CONTEXT);
+        tokenStorage = applicationContext.getBean(TokenStorage.class);
     }
 
     @Override

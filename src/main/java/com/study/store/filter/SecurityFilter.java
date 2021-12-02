@@ -1,8 +1,9 @@
 package com.study.store.filter;
 
-import com.study.di.ServiceLocator;
+import com.study.ApplicationContext;
 import com.study.store.exception.AuthenticationException;
 import com.study.store.exception.AuthorizationException;
+import com.study.store.listener.InitListener;
 import com.study.store.security.SecurityService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,10 +24,14 @@ public class SecurityFilter implements Filter {
 
     private static final String LOGIN_PATH = "/login";
     private final static String COOKIE_NAME = "user-token";
-    private final SecurityService service = ServiceLocator.getDependency(SecurityService.class);
+    private SecurityService securityService;
 
     @Override
     public void init(FilterConfig filterConfig) {
+        ApplicationContext applicationContext = (ApplicationContext) filterConfig.getServletContext()
+                                                                                 .getAttribute(
+                                                                                         InitListener.APPLICATION_CONTEXT);
+        securityService = applicationContext.getBean(SecurityService.class);
     }
 
     @Override
@@ -46,7 +51,7 @@ public class SecurityFilter implements Filter {
                         .orElse(null)
                 : null;
         try {
-            service.validateToken(token, path);
+            securityService.validateToken(token, path);
             chain.doFilter(httpRequest, httpResponse);
         } catch (AuthorizationException e) {
             httpResponse.sendError(e.getResponseCode());

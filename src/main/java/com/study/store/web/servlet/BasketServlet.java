@@ -1,7 +1,8 @@
 package com.study.store.web.servlet;
 
-import com.study.di.ServiceLocator;
+import com.study.ApplicationContext;
 import com.study.store.exception.HttpException;
+import com.study.store.listener.InitListener;
 import com.study.store.service.BasketService;
 import com.study.store.web.template.TemplateProvider;
 import lombok.SneakyThrows;
@@ -18,9 +19,16 @@ import java.util.Map;
 public class BasketServlet extends HttpServlet {
 
     private static final String BASKET = "basket";
-    private final TemplateProvider templateProvider = ServiceLocator.getDependency(TemplateProvider.class);
-    private final BasketService basketService = ServiceLocator.getDependency(BasketService.class);
+    private TemplateProvider templateProvider;
+    private BasketService basketService;
 
+    @Override
+    public void init() {
+        ApplicationContext applicationContext = (ApplicationContext) getServletContext().getAttribute(
+                InitListener.APPLICATION_CONTEXT);
+        templateProvider = applicationContext.getBean(TemplateProvider.class);
+        basketService = applicationContext.getBean(BasketService.class);
+    }
 
     @SneakyThrows
     @Override

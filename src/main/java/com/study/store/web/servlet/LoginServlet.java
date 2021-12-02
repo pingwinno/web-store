@@ -1,7 +1,8 @@
 package com.study.store.web.servlet;
 
-import com.study.di.ServiceLocator;
+import com.study.ApplicationContext;
 import com.study.store.exception.HttpException;
+import com.study.store.listener.InitListener;
 import com.study.store.security.SecurityService;
 import com.study.store.web.template.TemplateProvider;
 import lombok.SneakyThrows;
@@ -16,9 +17,16 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginServlet extends HttpServlet {
 
     private final static String COOKIE_NAME = "user-token";
-    private final SecurityService securityService = ServiceLocator.getDependency(SecurityService.class);
-    private final TemplateProvider templateProvider = ServiceLocator.getDependency(TemplateProvider.class);
+    private SecurityService securityService;
+    private TemplateProvider templateProvider;
 
+    @Override
+    public void init() {
+        ApplicationContext applicationContext = (ApplicationContext) getServletContext().getAttribute(
+                InitListener.APPLICATION_CONTEXT);
+        securityService = applicationContext.getBean(SecurityService.class);
+        templateProvider = applicationContext.getBean(TemplateProvider.class);
+    }
 
     @SneakyThrows
     @Override

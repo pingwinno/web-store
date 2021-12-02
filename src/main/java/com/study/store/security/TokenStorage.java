@@ -28,7 +28,7 @@ public class TokenStorage {
         return Optional.ofNullable(token != null ? tokenMap.get(token) : null);
     }
 
-    public void removeCookie(String token) {
+    public void removeToken(String token) {
         tokenMap.remove(token);
     }
 

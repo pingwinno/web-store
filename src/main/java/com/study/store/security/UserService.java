@@ -1,6 +1,5 @@
 package com.study.store.security;
 
-import com.study.di.ServiceLocator;
 import com.study.store.security.model.User;
 import com.study.store.security.persistence.user.UserRepository;
 
@@ -8,12 +7,11 @@ import java.util.Optional;
 
 public class UserService {
 
-    private final UserRepository userRepository = ServiceLocator.getDependency(UserRepository.class);
+    private UserRepository userRepository;
 
     public Optional<User> getByName(String user) {
         return userRepository.findByName(user);
     }
-
 
     public void create(User user) {
         userRepository.save(user);

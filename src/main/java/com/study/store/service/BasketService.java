@@ -1,6 +1,5 @@
 package com.study.store.service;
 
-import com.study.di.ServiceLocator;
 import com.study.store.model.Product;
 
 import java.util.ArrayList;
@@ -8,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class BasketService {
-    private final ProductService productService = ServiceLocator.getDependency(ProductService.class);
+    private ProductService productService;
 
     public List<Product> getBasketProducts(List<Long> ids) {
         var products = productService.getAll();

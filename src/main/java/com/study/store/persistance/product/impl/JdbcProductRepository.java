@@ -1,6 +1,5 @@
 package com.study.store.persistance.product.impl;
 
-import com.study.di.ServiceLocator;
 import com.study.store.model.Product;
 import com.study.store.persistance.product.ProductRepository;
 import lombok.SneakyThrows;
@@ -19,7 +18,7 @@ public class JdbcProductRepository implements ProductRepository {
     private final static String INSERT = "INSERT INTO PRODUCT (NAME, DESCRIPTION, PRICE, CREATION_DATE) Values (? ,? ,? ,?)";
     private final static String UPDATE = "UPDATE PRODUCT SET NAME = ?,DESCRIPTION =?, PRICE=? WHERE ID = ?";
     private final static String DELETE = "DELETE FROM PRODUCT WHERE ID = ?";
-    private final DataSource dataSource = ServiceLocator.getDependency(DataSource.class);
+    private DataSource dataSource;
 
     @SneakyThrows
     @Override

@@ -1,6 +1,5 @@
 package com.study.store.security.persistence.user.impl;
 
-import com.study.di.ServiceLocator;
 import com.study.store.model.enums.Role;
 import com.study.store.security.model.User;
 import com.study.store.security.persistence.user.UserRepository;
@@ -15,7 +14,7 @@ public class JdbcUserRepository implements UserRepository {
     private final static String INSERT = "INSERT INTO USERS (NAME, PASSWORD, SALT, ROLE) Values (? ,? ,? ,?)";
     private final static String UPDATE = "UPDATE USERS SET NAME = ?,PASSWORD =?, SALT=? WHERE ROLE = ?";
     private final static String DELETE = "DELETE FROM USERS WHERE NAME = ?";
-    private final DataSource dataSource = ServiceLocator.getDependency(DataSource.class);
+    private DataSource dataSource;
 
 
     @SneakyThrows

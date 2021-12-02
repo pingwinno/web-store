@@ -1,6 +1,5 @@
 package com.study.store.security;
 
-import com.study.di.ServiceLocator;
 import com.study.store.exception.AuthenticationException;
 import com.study.store.exception.AuthorizationException;
 import com.study.store.model.enums.Role;
@@ -30,8 +29,8 @@ public class SecurityService {
             Map.of(Role.ADMIN, List.of(ROOT, SEARCH, EDIT, ADD, LOGIN, LOGOUT),
                     Role.USER, List.of(ROOT, SEARCH, LOGIN, LOGOUT, BASKET),
                     Role.GUEST, List.of(ROOT, SEARCH, LOGIN));
-    private final UserService userService = ServiceLocator.getDependency(UserService.class);
-    private final TokenStorage tokenStorage = ServiceLocator.getDependency(TokenStorage.class);
+    private UserService userService;
+    private TokenStorage tokenStorage;
 
 
     public void validateToken(String token, String path) {
@@ -61,16 +60,16 @@ public class SecurityService {
                               .orElseThrow(AuthenticationException::new);
         var encodedPassword = DigestUtils.sha256Hex(password + user.getSalt());
         if (Objects.equals(encodedPassword, user.getPassword())) {
-            return generateCookie(user);
+            return generateToken(user);
         }
         throw new AuthenticationException();
     }
 
     public void logout(String token) {
-        tokenStorage.removeCookie(token);
+        tokenStorage.removeToken(token);
     }
 
-    private UserToken generateCookie(User user) {
+    private UserToken generateToken(User user) {
         var token = UUID.randomUUID()
                         .toString();
         var tokenEntity = UserToken.builder()

@@ -1,6 +1,5 @@
 package com.study.store.service;
 
-import com.study.di.ServiceLocator;
 import com.study.store.exception.NotFoundException;
 import com.study.store.model.Product;
 import com.study.store.persistance.product.ProductRepository;
@@ -10,7 +9,7 @@ import java.util.List;
 
 public class ProductService {
 
-    private final ProductRepository productRepository = ServiceLocator.getDependency(ProductRepository.class);
+    private ProductRepository productRepository;
 
     public List<Product> getAll() {
         return productRepository.findAll();

@@ -1,6 +1,7 @@
 package com.study.store.web.servlet;
 
-import com.study.di.ServiceLocator;
+import com.study.ApplicationContext;
+import com.study.store.listener.InitListener;
 import com.study.store.service.ProductService;
 import com.study.store.web.template.TemplateProvider;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +15,16 @@ import java.util.Map;
 public class ProductListServlet extends HttpServlet {
 
     private final static String LIST_TEMPLATE = "%s-list.ftl";
-    private final ProductService productService = ServiceLocator.getDependency(ProductService.class);
-    private final TemplateProvider templateProvider = ServiceLocator.getDependency(TemplateProvider.class);
+    private ProductService productService;
+    private TemplateProvider templateProvider;
+
+    @Override
+    public void init() {
+        ApplicationContext applicationContext = (ApplicationContext) getServletContext().getAttribute(
+                InitListener.APPLICATION_CONTEXT);
+        productService = applicationContext.getBean(ProductService.class);
+        templateProvider = applicationContext.getBean(TemplateProvider.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
