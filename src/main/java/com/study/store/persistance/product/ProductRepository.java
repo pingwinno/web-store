@@ -9,6 +9,8 @@ public interface ProductRepository {
 
     List<Product> findAll();
 
+    List<Product> findAllByIds(List<Long> ids);
+
     Optional<Product> findById(long id);
 
     List<Product> search(String query);

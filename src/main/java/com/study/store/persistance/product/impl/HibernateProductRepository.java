@@ -21,6 +21,11 @@ public class HibernateProductRepository implements ProductRepository {
     }
 
     @Override
+    public List<Product> findAllByIds(List<Long> ids) {
+        return null;
+    }
+
+    @Override
     public List<Product> search(String wordForSearch) {
         try (var session = sessionFactory.openSession()) {
             var criteriaBuilder = session.getCriteriaBuilder();

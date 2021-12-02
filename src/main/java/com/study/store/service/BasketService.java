@@ -10,7 +10,7 @@ public class BasketService {
     private ProductService productService;
 
     public List<Product> getBasketProducts(List<Long> ids) {
-        var products = productService.getAll();
+        var products = productService.getAllByIds(ids);
         var basket = new ArrayList<Product>();
         for (Product product : products) {
             for (Long id : ids) {
