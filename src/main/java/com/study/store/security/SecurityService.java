@@ -1,7 +1,6 @@
 package com.study.store.security;
 
 import com.study.store.exception.AuthenticationException;
-import com.study.store.exception.AuthorizationException;
 import com.study.store.model.enums.Role;
 import com.study.store.security.model.User;
 import com.study.store.security.model.UserToken;
@@ -9,51 +8,31 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 @Slf4j
 public class SecurityService {
     private final static int DEFAULT_LIFETIME = 14400;
-    private final static Pattern ROOT = Pattern.compile("/");
-    private final static Pattern SEARCH = Pattern.compile("/search.*");
-    private final static Pattern ADD = Pattern.compile("/add");
-    private final static Pattern EDIT = Pattern.compile("/edit/.*");
-    private final static Pattern LOGIN = Pattern.compile("/login");
-    private final static Pattern LOGOUT = Pattern.compile("/logout");
-    private final static Pattern BASKET = Pattern.compile("/basket.*");
-    private static final Map<Role, List<Pattern>> allowedPaths =
-            Map.of(Role.ADMIN, List.of(ROOT, SEARCH, EDIT, ADD, LOGIN, LOGOUT),
-                    Role.USER, List.of(ROOT, SEARCH, LOGIN, LOGOUT, BASKET),
-                    Role.GUEST, List.of(ROOT, SEARCH, LOGIN));
+    private static final UserToken GUEST_USER = UserToken.builder()
+                                                         .user(User.builder()
+                                                                   .role(Role.GUEST)
+                                                                   .build())
+                                                         .build();
     private UserService userService;
     private TokenStorage tokenStorage;
 
-
-    public void validateToken(String token, String path) {
+    public UserToken getToken(String token) {
         var tokenEntity = tokenStorage.getTokenEntity(token);
-        var role = Role.GUEST;
+
         if (tokenEntity.isPresent() && tokenEntity.get()
                                                   .getExpirationTime() > Instant.now()
                                                                                 .getEpochSecond()) {
-            role = tokenEntity.get()
-                              .getUser()
-                              .getRole();
+            return tokenEntity.get();
         }
-        validatePath(role, path);
+        return GUEST_USER;
     }
 
-    private void validatePath(Role role, String path) {
-        allowedPaths.get(role)
-                    .stream()
-                    .filter(allowedPath -> allowedPath.matcher(path)
-                                                      .matches())
-                    .findFirst()
-                    .orElseThrow(AuthorizationException::new);
-    }
 
     public UserToken login(String userName, String password) {
         var user = userService.getByName(userName)

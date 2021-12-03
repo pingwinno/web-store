@@ -6,12 +6,12 @@
          version="4.0">
 
     <listener>
-        <listener-class>com.study.store.listener.InitListener</listener-class>
+        <listener-class>com.study.store.web.listener.InitListener</listener-class>
     </listener>
 
     <filter>
         <filter-name>SecurityFilter</filter-name>
-        <filter-class>com.study.store.filter.SecurityFilter</filter-class>
+        <filter-class>com.study.store.web.filter.SecurityFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -21,7 +21,7 @@
 
     <filter>
         <filter-name>TemplateFilter</filter-name>
-        <filter-class>com.study.store.filter.TemplateFilter</filter-class>
+        <filter-class>com.study.store.web.filter.TemplateFilter</filter-class>
     </filter>
 
     <filter-mapping>

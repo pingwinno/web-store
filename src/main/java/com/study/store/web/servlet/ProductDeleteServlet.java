@@ -1,7 +1,7 @@
 package com.study.store.web.servlet;
 
 import com.study.ApplicationContext;
-import com.study.store.listener.InitListener;
+import com.study.store.web.listener.InitListener;
 import com.study.store.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,4 +1,4 @@
-package com.study.store.listener;
+package com.study.store.web.listener;
 
 import com.study.ApplicationContext;
 import com.study.ClassPathApplicationContext;
