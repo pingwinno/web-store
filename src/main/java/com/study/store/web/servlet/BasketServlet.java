@@ -1,78 +1,45 @@
 package com.study.store.web.servlet;
 
-import com.study.ApplicationContext;
-import com.study.store.exception.HttpException;
-import com.study.store.web.listener.InitListener;
+import com.study.store.Basket;
 import com.study.store.service.BasketService;
-import com.study.store.web.template.TemplateProvider;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
-public class BasketServlet extends HttpServlet {
+@Controller
+@Scope("session")
+@RequestMapping("/basket")
+public class BasketServlet {
 
     private static final String BASKET = "basket";
-    private TemplateProvider templateProvider;
+    @Autowired
     private BasketService basketService;
+    @Autowired
+    private Basket basket;
 
-    @Override
-    public void init() {
-        ApplicationContext applicationContext = (ApplicationContext) getServletContext().getAttribute(
-                InitListener.APPLICATION_CONTEXT);
-        templateProvider = applicationContext.getBean(TemplateProvider.class);
-        basketService = applicationContext.getBean(BasketService.class);
+    @GetMapping
+    protected String getBasketPage(Model model) {
+        model.addAttribute("products", basketService.getBasketProducts(basket.getProducts()));
+        return BASKET;
     }
 
-    @SneakyThrows
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
-        try {
-            resp.setContentType("text/html;charset=utf-8");
-            resp.setStatus(HttpServletResponse.SC_OK);
-            var basket = (List<Long>) req.getSession()
-                                         .getAttribute(BASKET);
-            var params = basket != null
-                    ? Map.of("products", basketService.getBasketProducts(basket))
-                    : Map.of("products", List.of());
-            var data = templateProvider.writePage(params, "basket.ftl");
-            resp.getOutputStream()
-                .write(data);
-        } catch (Throwable e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            log.error("Fail to send response", e);
-        }
+
+    @PostMapping("/add")
+    public String addToBasket(@RequestParam Long productId) {
+        basket.addProductId(productId);
+        return "redirect:/";
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        try {
-            var session = req.getSession();
-            var url = req.getRequestURI();
-            if (session.getAttribute(BASKET) == null) {
-                session.setAttribute(BASKET, new ArrayList<Long>());
-            }
-            var productId = Long.valueOf(req.getParameter("productId"));
-            var basket = (List<Long>) session.getAttribute(BASKET);
-            if (url.contains("add")) {
-                basket.add(productId);
-                resp.sendRedirect("/");
-            } else if (url.contains("delete")) {
-                basket.remove(productId);
-                resp.sendRedirect("/basket");
-            }
-        } catch (HttpException e) {
-            resp.setStatus(e.getResponseCode());
-        } catch (Throwable e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            log.error("Fail to send response", e);
-        }
+    @PostMapping("/delete")
+    public String deleteFromBasket(@RequestParam Long productId) {
+        basket.removeProduct(productId);
+        return "redirect:/basket";
     }
-
 }

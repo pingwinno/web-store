@@ -24,4 +24,8 @@ public class UserService {
     public void delete(String name) {
         userRepository.delete(name);
     }
+
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 }

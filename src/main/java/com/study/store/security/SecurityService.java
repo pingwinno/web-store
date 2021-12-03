@@ -2,6 +2,7 @@ package com.study.store.security;
 
 import com.study.store.exception.AuthenticationException;
 import com.study.store.model.enums.Role;
+import com.study.store.security.model.Credentials;
 import com.study.store.security.model.User;
 import com.study.store.security.model.UserToken;
 import lombok.extern.slf4j.Slf4j;
@@ -34,10 +35,10 @@ public class SecurityService {
     }
 
 
-    public UserToken login(String userName, String password) {
-        var user = userService.getByName(userName)
+    public UserToken login(Credentials credentials) {
+        var user = userService.getByName(credentials.getUserName())
                               .orElseThrow(AuthenticationException::new);
-        var encodedPassword = DigestUtils.sha256Hex(password + user.getSalt());
+        var encodedPassword = DigestUtils.sha256Hex(credentials.getPassword() + user.getSalt());
         if (Objects.equals(encodedPassword, user.getPassword())) {
             return generateToken(user);
         }
@@ -59,5 +60,13 @@ public class SecurityService {
                                    .build();
         tokenStorage.saveToken(tokenEntity);
         return tokenEntity;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    public void setTokenStorage(TokenStorage tokenStorage) {
+        this.tokenStorage = tokenStorage;
     }
 }

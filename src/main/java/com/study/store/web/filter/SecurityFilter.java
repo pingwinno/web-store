@@ -1,12 +1,12 @@
 package com.study.store.web.filter;
 
-import com.study.ApplicationContext;
 import com.study.store.exception.AuthenticationException;
 import com.study.store.exception.AuthorizationException;
 import com.study.store.model.enums.Role;
 import com.study.store.security.SecurityService;
-import com.study.store.web.listener.InitListener;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -14,6 +14,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 @Slf4j
+@Component("securityFilter")
 public class SecurityFilter implements Filter {
     private final static Pattern ROOT = Pattern.compile("/");
     private final static Pattern SEARCH = Pattern.compile("/search.*");
@@ -38,14 +40,12 @@ public class SecurityFilter implements Filter {
                     Role.GUEST, List.of(ROOT, SEARCH, LOGIN));
     private static final String LOGIN_PATH = "/login";
     private final static String COOKIE_NAME = "user-token";
+    @Autowired
     private SecurityService securityService;
 
     @Override
     public void init(FilterConfig filterConfig) {
-        ApplicationContext applicationContext = (ApplicationContext) filterConfig.getServletContext()
-                                                                                 .getAttribute(
-                                                                                         InitListener.APPLICATION_CONTEXT);
-        securityService = applicationContext.getBean(SecurityService.class);
+
     }
 
     @Override

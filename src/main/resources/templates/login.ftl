@@ -17,7 +17,7 @@
 
 <body class="text-center">
 <div class="row">
-    <form class="form-signin col-3 mx-auto" action="/login" method="POST">>
+    <form class="form-signin col-3 mx-auto" action="/login" modelAttribute="credentials" method="POST">
         <h1 class="h3 mb-3 text-white font-weight-normal">Please sign in</h1>
         <label for="inputUser" class="sr-only">User Name</label>
         <input type="text" id="inputUser" name="userName" class="form-control" placeholder="User Name" required

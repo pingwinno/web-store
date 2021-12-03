@@ -15,12 +15,16 @@ import java.util.StringJoiner;
 public class JdbcProductRepository implements ProductRepository {
     private final static String SELECT_ALL = "SELECT ID, NAME, DESCRIPTION, PRICE, CREATION_DATE FROM PRODUCT;";
     private final static String SELECT_BY_ID = "SELECT ID, NAME, DESCRIPTION, PRICE, CREATION_DATE FROM PRODUCT WHERE ID=?;";
-    private final static String SELECT_BY_IDS = "SELECT ID, NAME, DESCRIPTION, PRICE, CREATION_DATE FROM PRODUCT WHERE ID IN (%s);";
+    private final static String SELECT_BY_IDS = "SELECT ID, NAME, DESCRIPTION, PRICE, CREATION_DATE FROM PRODUCT WHERE ID IN ";
     private final static String FIND_BY_NAME_AND_DESCRIPTION = "SELECT ID, NAME, DESCRIPTION, PRICE, CREATION_DATE FROM PRODUCT WHERE NAME=? OR DESCRIPTION LIKE ?;";
     private final static String INSERT = "INSERT INTO PRODUCT (NAME, DESCRIPTION, PRICE, CREATION_DATE) Values (? ,? ,? ,?)";
     private final static String UPDATE = "UPDATE PRODUCT SET NAME = ?,DESCRIPTION =?, PRICE=? WHERE ID = ?";
     private final static String DELETE = "DELETE FROM PRODUCT WHERE ID = ?";
     private DataSource dataSource;
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @SneakyThrows
     @Override
@@ -48,15 +52,15 @@ public class JdbcProductRepository implements ProductRepository {
     @SneakyThrows
     @Override
     public List<Product> findAllByIds(List<Long> ids) {
-        var stringJoiner = new StringJoiner(",");
+        var stringJoiner = new StringJoiner(",", " (", ");");
         for (int i = 0; i < ids.size(); i++) {
             stringJoiner.add("?");
         }
-        var queryString = stringJoiner.toString();
+        var queryString = SELECT_BY_IDS + stringJoiner;
         try (var connection = dataSource.getConnection();
              var statement = connection.prepareStatement(queryString)) {
             for (int i = 1; i <= ids.size(); i++) {
-                statement.setLong(i, ids.get(i));
+                statement.setLong(i, ids.get(i - 1));
             }
             var resultSet = statement.executeQuery();
             var products = new ArrayList<Product>();

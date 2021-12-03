@@ -40,4 +40,8 @@ public class ProductService {
     public void delete(long id) {
         productRepository.delete(id);
     }
+
+    public void setProductRepository(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 }

@@ -1,11 +1,11 @@
 package com.study.store.web.filter;
 
 
-import com.study.ApplicationContext;
-import com.study.store.web.listener.InitListener;
 import com.study.store.model.enums.Role;
 import com.study.store.security.TokenStorage;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -13,24 +13,24 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
 
 @Slf4j
+@Component
 public class TemplateFilter implements Filter {
 
     private final static String COOKIE_NAME = "user-token";
+    @Autowired
     private TokenStorage tokenStorage;
 
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        ApplicationContext applicationContext = (ApplicationContext) filterConfig.getServletContext()
-                                                                                 .getAttribute(
-                                                                                         InitListener.APPLICATION_CONTEXT);
-        tokenStorage = applicationContext.getBean(TokenStorage.class);
+    public void init(FilterConfig filterConfig) {
+
     }
 
     @Override

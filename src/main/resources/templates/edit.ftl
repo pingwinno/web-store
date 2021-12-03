@@ -19,7 +19,7 @@
         </li>
     </ul>
 </header>
-<form action="/edit/${product.id}" method="POST">
+<form action="/edit/${product.id}" modelAttribute="product" method="POST">
     <div class="form-group my-2 my-lg-0">
         <label for="productName" class="form-label text-white">Product Name</label>
         <input name="productName" type="text" class="form-control" id="productName" value="${product.name}">

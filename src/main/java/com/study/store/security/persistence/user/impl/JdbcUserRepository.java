@@ -74,4 +74,8 @@ public class JdbcUserRepository implements UserRepository {
             preparedStatement.executeUpdate();
         }
     }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 }
