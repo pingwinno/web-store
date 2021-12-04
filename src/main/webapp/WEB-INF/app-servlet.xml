@@ -21,35 +21,7 @@
         <property name="driverClassName" value="org.postgresql.Driver"/>
         <property name="jdbcUrl" value="jdbc:postgresql://localhost/store"/>
     </bean>
-    <bean id="productRepository" class="com.study.store.persistance.product.impl.JdbcProductRepository">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
 
-    <bean id="userRepository" class="com.study.store.security.persistence.user.impl.JdbcUserRepository">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean id="tokenStorage" class="com.study.store.security.TokenStorage"/>
-
-    <bean id="templateProvider" class="com.study.store.web.template.TemplateProvider"/>
-
-    <bean id="productService" class="com.study.store.service.ProductService">
-        <property name="productRepository" ref="productRepository"/>
-    </bean>
-
-    <bean id="userService" class="com.study.store.security.UserService">
-        <property name="userRepository" ref="userRepository"/>
-    </bean>
-
-    <bean id="basketService" class="com.study.store.service.BasketService">
-        <property name="productService" ref="productService"/>
-    </bean>
-
-    <bean id="securityService" class="com.study.store.security.SecurityService">
-        <property name="userService" ref="userService"/>
-        <property name="tokenStorage" ref="tokenStorage"/>
-    </bean>
-    <bean id="basket" class="com.study.store.Basket" scope="session"/>
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPath" value="classpath:templates/"/>
     </bean>

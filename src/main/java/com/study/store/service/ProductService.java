@@ -3,13 +3,19 @@ package com.study.store.service;
 import com.study.store.exception.NotFoundException;
 import com.study.store.model.Product;
 import com.study.store.persistance.product.ProductRepository;
+import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.List;
 
+@Service
 public class ProductService {
 
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     public List<Product> getAll() {
         return productRepository.findAll();
@@ -39,9 +45,5 @@ public class ProductService {
 
     public void delete(long id) {
         productRepository.delete(id);
-    }
-
-    public void setProductRepository(ProductRepository productRepository) {
-        this.productRepository = productRepository;
     }
 }

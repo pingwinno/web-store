@@ -3,6 +3,7 @@ package com.study.store.persistance.product.impl;
 import com.study.store.model.Product;
 import com.study.store.persistance.product.ProductRepository;
 import lombok.SneakyThrows;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.Date;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.StringJoiner;
 
+@Repository
 public class JdbcProductRepository implements ProductRepository {
     private final static String SELECT_ALL = "SELECT ID, NAME, DESCRIPTION, PRICE, CREATION_DATE FROM PRODUCT;";
     private final static String SELECT_BY_ID = "SELECT ID, NAME, DESCRIPTION, PRICE, CREATION_DATE FROM PRODUCT WHERE ID=?;";
@@ -20,9 +22,9 @@ public class JdbcProductRepository implements ProductRepository {
     private final static String INSERT = "INSERT INTO PRODUCT (NAME, DESCRIPTION, PRICE, CREATION_DATE) Values (? ,? ,? ,?)";
     private final static String UPDATE = "UPDATE PRODUCT SET NAME = ?,DESCRIPTION =?, PRICE=? WHERE ID = ?";
     private final static String DELETE = "DELETE FROM PRODUCT WHERE ID = ?";
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
-    public void setDataSource(DataSource dataSource) {
+    public JdbcProductRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 

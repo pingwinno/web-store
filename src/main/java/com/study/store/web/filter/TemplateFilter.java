@@ -26,7 +26,6 @@ public class TemplateFilter implements Filter {
     @Autowired
     private TokenStorage tokenStorage;
 
-
     @Override
     public void init(FilterConfig filterConfig) {
 

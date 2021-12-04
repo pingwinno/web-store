@@ -33,20 +33,22 @@
         <th scope="col">Description</th>
         <th scope="col">Product Price</th>
         <th scope="col">Creation Date</th>
+        <th scope="col">Count</th>
         <th scope="col">Actions</th>
     </tr>
     </thead>
     <tbody>
-    <#list products as product>
+    <#list basketItems as item>
     <tr>
-        <td>${product.id}</td>
-        <td>${product.name}</td>
-        <td>${product.description}</td>
-        <td>${product.price}</td>
-        <td>${product.creationDate}</td>
+        <td>${item.id}</td>
+        <td>${item.product.name}</td>
+        <td>${item.product.description}</td>
+        <td>${item.product.price}</td>
+        <td>${item.product.creationDate}</td>
+        <td>${item.count}</td>
         <td>
             <form action="/basket/delete" method="post">
-                <button type="submit" class="btn btn-warning" name="productId" value=${product.id}>delete from basket
+                <button type="submit" class="btn btn-warning" name="productId" value=${item.id}>delete from basket
                 </button>
             </form>
         </td>

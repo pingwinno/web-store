@@ -4,17 +4,23 @@ import com.study.store.model.enums.Role;
 import com.study.store.security.model.User;
 import com.study.store.security.persistence.user.UserRepository;
 import lombok.SneakyThrows;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Optional;
 
+@Repository
 public class JdbcUserRepository implements UserRepository {
     private final static String SELECT_BY_NAME = "SELECT NAME, PASSWORD, SALT, ROLE FROM USERS WHERE NAME=?;";
     private final static String INSERT = "INSERT INTO USERS (NAME, PASSWORD, SALT, ROLE) Values (? ,? ,? ,?)";
     private final static String UPDATE = "UPDATE USERS SET NAME = ?,PASSWORD =?, SALT=? WHERE ROLE = ?";
     private final static String DELETE = "DELETE FROM USERS WHERE NAME = ?";
-    private DataSource dataSource;
+    private final DataSource dataSource;
+
+    public JdbcUserRepository(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
 
     @SneakyThrows
@@ -73,9 +79,5 @@ public class JdbcUserRepository implements UserRepository {
             preparedStatement.setString(1, name);
             preparedStatement.executeUpdate();
         }
-    }
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
     }
 }
