@@ -1,4 +1,4 @@
-package com.study.store.web.servlet;
+package com.study.store.web.controller;
 
 import com.study.store.security.SecurityService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
-public class LogoutServlet {
+public class LogoutController {
     private final static String COOKIE_NAME = "user-token";
 
-    private SecurityService securityService;
+    private final SecurityService securityService;
 
-    public void setSecurityService(SecurityService securityService) {
+    public LogoutController(SecurityService securityService) {
         this.securityService = securityService;
     }
 

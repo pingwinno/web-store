@@ -7,6 +7,7 @@ import com.study.store.security.model.User;
 import com.study.store.security.model.UserToken;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -16,7 +17,6 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class SecurityService {
-    private final static int DEFAULT_LIFETIME = 14400;
     private static final UserToken GUEST_USER = UserToken.builder()
                                                          .user(User.builder()
                                                                    .role(Role.GUEST)
@@ -24,6 +24,8 @@ public class SecurityService {
                                                          .build();
     private final UserService userService;
     private final TokenStorage tokenStorage;
+    @Value(value = "${security.token.lifetime}")
+    private int defaultLifetime = 14400;
 
     public SecurityService(UserService userService, TokenStorage tokenStorage) {
         this.userService = userService;
@@ -62,7 +64,7 @@ public class SecurityService {
         var tokenEntity = UserToken.builder()
                                    .token(token)
                                    .expirationTime(Instant.now()
-                                                          .getEpochSecond() + DEFAULT_LIFETIME)
+                                                          .getEpochSecond() + defaultLifetime)
                                    .user(user)
                                    .build();
         tokenStorage.saveToken(tokenEntity);

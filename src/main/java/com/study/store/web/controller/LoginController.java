@@ -1,9 +1,8 @@
-package com.study.store.web.servlet;
+package com.study.store.web.controller;
 
 import com.study.store.security.SecurityService;
 import com.study.store.security.model.Credentials;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,8 +19,12 @@ public class LoginController {
 
     private final static String COOKIE_NAME = "user-token";
     private static final String LOGIN_TEMPLATE = "login";
-    @Autowired
-    private SecurityService securityService;
+
+    private final SecurityService securityService;
+
+    public LoginController(SecurityService securityService) {
+        this.securityService = securityService;
+    }
 
     @PostMapping
     protected String login(@ModelAttribute Credentials credentials, HttpServletResponse response) {

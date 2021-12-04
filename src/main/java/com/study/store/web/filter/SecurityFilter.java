@@ -5,8 +5,6 @@ import com.study.store.exception.AuthorizationException;
 import com.study.store.model.enums.Role;
 import com.study.store.security.SecurityService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -14,6 +12,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +23,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 @Slf4j
-@Component("securityFilter")
+@WebFilter("/*")
 public class SecurityFilter implements Filter {
     private final static Pattern ROOT = Pattern.compile("/");
     private final static Pattern SEARCH = Pattern.compile("/search.*");
@@ -33,14 +32,11 @@ public class SecurityFilter implements Filter {
     private final static Pattern LOGIN = Pattern.compile("/login");
     private final static Pattern LOGOUT = Pattern.compile("/logout");
     private final static Pattern BASKET = Pattern.compile("/basket.*");
-    private static final Map<Role, List<Pattern>> allowedPaths =
-            Map.of(Role.ADMIN, List.of(ROOT, SEARCH, EDIT, ADD, LOGIN, LOGOUT),
-                    Role.USER, List.of(ROOT, SEARCH, LOGIN, LOGOUT, BASKET),
-                    Role.GUEST, List.of(ROOT, SEARCH, LOGIN));
+    private static final Map<Role, List<Pattern>> allowedPaths = Map.of(Role.ADMIN,
+            List.of(ROOT, SEARCH, EDIT, ADD, LOGIN, LOGOUT), Role.USER, List.of(ROOT, SEARCH, LOGIN, LOGOUT, BASKET),
+            Role.GUEST, List.of(ROOT, SEARCH, LOGIN));
     private static final String LOGIN_PATH = "/login";
     private final static String COOKIE_NAME = "user-token";
-    @Autowired
-    private SecurityService securityService;
 
     @Override
     public void init(FilterConfig filterConfig) {
@@ -49,20 +45,20 @@ public class SecurityFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
+        var securityService = (SecurityService) servletRequest.getServletContext()
+                                                              .getAttribute("securityService");
         var httpRequest = (HttpServletRequest) servletRequest;
         var httpResponse = (HttpServletResponse) servletResponse;
-        var path = httpRequest.getServletPath();
+        var path = httpRequest.getRequestURI();
 
         var cookies = httpRequest.getCookies();
 
-        var token = cookies != null
-                ? Arrays.stream(cookies)
-                        .filter(cookie -> cookie.getName()
-                                                .equals(COOKIE_NAME))
-                        .map(Cookie::getValue)
-                        .findFirst()
-                        .orElse(null)
-                : null;
+        var token = cookies != null ? Arrays.stream(cookies)
+                                            .filter(cookie -> cookie.getName()
+                                                                    .equals(COOKIE_NAME))
+                                            .map(Cookie::getValue)
+                                            .findFirst()
+                                            .orElse(null) : null;
         try {
             var userToken = securityService.getToken(token);
             validatePath(userToken.getUser()

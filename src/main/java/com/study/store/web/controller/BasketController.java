@@ -1,4 +1,4 @@
-package com.study.store.web.servlet;
+package com.study.store.web.controller;
 
 import com.study.store.service.basket.Basket;
 import lombok.extern.slf4j.Slf4j;
