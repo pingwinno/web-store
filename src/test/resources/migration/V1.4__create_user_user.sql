@@ -1,0 +1,2 @@
+INSERT INTO USERS (NAME, PASSWORD, SALT, ROLE)
+VALUES ('user', 'e172c5654dbc12d78ce1850a4f7956ba6e5a3d2ac40f0925fc6d691ebb54f6bf', 'user', 'user');

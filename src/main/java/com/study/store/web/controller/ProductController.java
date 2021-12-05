@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Optional;
-
 @Slf4j
 @Controller
 public class ProductController {
@@ -27,18 +25,16 @@ public class ProductController {
     }
 
     @GetMapping(path = "/")
-    protected String getAllProductPage(@RequestAttribute Optional<String> prefixOptional, Model model) {
+    protected String getAllProductPage(@RequestAttribute String prefix, Model model) {
         model.addAttribute("products", productService.getAll());
-        var templateName = String.format(LIST_TEMPLATE, prefixOptional.orElse("user"));
-        return templateName;
+        return String.format(LIST_TEMPLATE, prefix);
     }
 
     @GetMapping(path = "/search")
     @ResponseBody
-    protected String getSearchProductPage(@RequestAttribute Optional<String> prefixOptional, @RequestParam String searchInput, Model model) {
+    protected String getSearchProductPage(@RequestAttribute String prefix, @RequestParam String searchInput, Model model) {
         model.addAttribute("products", productService.search(searchInput));
-        var templateName = String.format(LIST_TEMPLATE, prefixOptional.orElse("user"));
-        return templateName;
+        return String.format(LIST_TEMPLATE, prefix);
     }
 
     @GetMapping(path = "/add")

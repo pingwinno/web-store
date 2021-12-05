@@ -30,8 +30,8 @@ public class TemplateFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
-       var tokenStorage = (TokenStorage) servletRequest.getServletContext()
-                                                  .getAttribute("tokenStorage");
+        var tokenStorage = (TokenStorage) servletRequest.getServletContext()
+                                                        .getAttribute("tokenStorage");
         var httpRequest = (HttpServletRequest) servletRequest;
 
         var cookies = httpRequest.getCookies();
